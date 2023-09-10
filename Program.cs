@@ -1,3 +1,5 @@
+using MyFirstDotNetCoreApp.CustomMiddleware;
+
 namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
@@ -5,23 +7,22 @@ internal abstract class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
 
-        app.MapGet("/hello", () => "Hello World!");
+        app.MapGet("/hello", () => "Hello World!\n");
         app.Use(async (context, next) =>
         {
-            await context.Response.WriteAsync("Hello World!");
+            await context.Response.WriteAsync("Hello World!\n");
             await next(context);
         });
-        app.Use(async (context, next) =>
-        {
-            await context.Response.WriteAsync("Hello World 1!");
-            await next(context);
-        });
+        app.UseMiddleware<MyCustomMiddleware>();
+        app.UseMiddleware<MyCustomMiddleware>();
+
         app.Run(async context =>
         {
             // await PastCode(context);
-            await context.Response.WriteAsync("Hello World Again!");
+            await context.Response.WriteAsync("Hello World Again!\n");
         });
         app.Run();
     }
