@@ -12,11 +12,13 @@ internal class Program
         {
             // await queryString(context);
             StreamReader reader = new StreamReader(context.Request.Body);
+            string path = context.Request.Path;
             string body = await reader.ReadToEndAsync();
             Dictionary<string, StringValues> queryDict =
                 Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
             await queyDict(queryDict, context, body);
             await context.Response.WriteAsync("Hello World1!");
+            await queryString(context, path);
         });
         app.Run();
     }
@@ -30,9 +32,8 @@ internal class Program
         }
     }
 
-    private static async Task queryString(HttpContext context)
+    private static async Task queryString(HttpContext context, string path)
     {
-        string path = context.Request.Path;
         string method = context.Request.Method;
         await context.Response.WriteAsync("Hello World1!");
         await context.Response.WriteAsync("<h1>Hello World1!</h1>");
