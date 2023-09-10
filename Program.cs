@@ -15,14 +15,19 @@ internal class Program
             string body = await reader.ReadToEndAsync();
             Dictionary<string, StringValues> queryDict =
                 Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
-            if (queryDict.ContainsKey("firstName"))
-            {
-                string firstName = queryDict["firstName"][0];
-                await context.Response.WriteAsync($"<p>Hello World1! {body} ? {queryDict} {firstName}</p>");
-            }
+            await queyDict(queryDict, context, body);
             await context.Response.WriteAsync("Hello World1!");
         });
         app.Run();
+    }
+
+    private static async Task queyDict(Dictionary<string, StringValues> queryDict, HttpContext context, string body)
+    {
+        if (queryDict.ContainsKey("firstName"))
+        {
+            string firstName = queryDict["firstName"][0];
+            await context.Response.WriteAsync($"<p>Hello World1! {body} ? {queryDict} {firstName}</p>");
+        }
     }
 
     private static async Task queryString(HttpContext context)
