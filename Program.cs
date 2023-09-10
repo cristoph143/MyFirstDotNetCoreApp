@@ -10,14 +10,16 @@ internal abstract class Program
         builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
 
-        app.MapGet("/hello", () => "Hello World!\n");
+        app.MapGet("/hello", () => "Hello World 1!\n");
         app.Use(async (context, next) =>
         {
-            await context.Response.WriteAsync("Hello World!\n");
+            await context.Response.WriteAsync("Hello World 2!\n");
             await next(context);
         });
-        app.UseMiddleware<MyCustomMiddleware>();
-        app.UseMiddleware<MyCustomMiddleware>();
+        app.UseMyCustomMiddleware();
+        app.UseMyCustomMiddleware();
+        // app.UseMiddleware<MyCustomMiddleware>();
+        // app.UseMiddleware<MyCustomMiddleware>();
 
         app.Run(async context =>
         {
