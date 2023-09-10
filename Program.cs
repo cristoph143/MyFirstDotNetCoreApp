@@ -26,14 +26,17 @@ internal class Program
             case "GET":
             {
                 var containsKeys = context.Request.Query.ContainsKey("id");
-                switch (containsKeys)
+                var containsAgent = context.Request.Headers.ContainsKey("User-Agent");
+                if (containsAgent)
                 {
-                    case true:
-                    {
-                        var id = context.Request.Query["id"].ToString();
-                        await context.Response.WriteAsync($"<p>Hello World ID! {id}</p>");
-                        break;
-                    }
+                    var userAgent = context.Request.Headers["User-Agent"];
+                    await context.Response.WriteAsync($"<p>Hello World UserAgent! {userAgent}</p>");
+                }
+
+                if (containsKeys)
+                {
+                    var id = context.Request.Query["id"].ToString();
+                    await context.Response.WriteAsync($"<p>Hello World ID! {id}</p>");
                 }
 
                 break;
