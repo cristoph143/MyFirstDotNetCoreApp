@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Primitives;
+
 internal class Program
 {
     public static void Main(string[] args)
@@ -8,19 +10,29 @@ internal class Program
         app.MapGet("/", () => "Hello World!");
         app.Run(async context =>
         {
-            string path = context.Request.Path;
-            string method = context.Request.Method;
-            await queryString(method, context);
+            // await queryString(context);
+            StreamReader reader = new StreamReader(context.Request.Body);
+            string body = await reader.ReadToEndAsync();
+            Dictionary<string, StringValues> queryDict =
+                Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
+            if (queryDict.ContainsKey("firstName"))
+            {
+                string firstName = queryDict["firstName"][0];
+                await context.Response.WriteAsync($"<p>Hello World1! {body} ? {queryDict} {firstName}</p>");
+            }
             await context.Response.WriteAsync("Hello World1!");
-            await context.Response.WriteAsync("<h1>Hello World1!</h1>");
-            await context.Response.WriteAsync($"<p>Hello World1! {path} ? {method}</p>");
-            await context.Response.WriteAsync("Hello World2!");
         });
         app.Run();
     }
 
-    private static async Task queryString(string method, HttpContext context)
+    private static async Task queryString(HttpContext context)
     {
+        string path = context.Request.Path;
+        string method = context.Request.Method;
+        await context.Response.WriteAsync("Hello World1!");
+        await context.Response.WriteAsync("<h1>Hello World1!</h1>");
+        await context.Response.WriteAsync($"<p>Hello World1! {path} ? {method}</p>");
+        await context.Response.WriteAsync("Hello World2!");
         switch (method)
         {
             case "GET":
