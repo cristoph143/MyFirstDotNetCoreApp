@@ -1,5 +1,7 @@
 // using Microsoft.Extensions.Primitives;
 
+using System.Text;
+
 namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
@@ -31,41 +33,68 @@ internal abstract class Program
     {
         if (method == "GET" && path == "/")
         {
-            var isFirst = await IsContainKeys(context, "firstNumber");
-            var isSecond = await IsContainKeys(context, "secondNumber");
-            var isOps = await IsContainKeys(context, "operation");
+            var errorMessages = new StringBuilder();
 
-            if (!isFirst && !isSecond && !isOps) return;
+            var isFirst = await IsContainKeys(context, "firstNumber", errorMessages);
+            var isSecond = await IsContainKeys(context, "secondNumber", errorMessages);
+            var isOps = await IsContainKeys(context, "operation", errorMessages);
+
+            if (!isFirst || !isSecond || !isOps)
+            {
+                await context.Response.WriteAsync(errorMessages.ToString());
+                await context.Response.CompleteAsync();
+                return;
+            }
             await CalculateResult(context);
         }
     }
 
     private static async Task CalculateResult(HttpContext context)
     {
-        var firstNumber = await ConvertToInt(context, "firstNumber");
-        var secondNumber = await ConvertToInt(context, "secondNumber");
-        var operation = context.Request.Query["operation"].FirstOrDefault();       
+        var errorMessages = new StringBuilder();
+
+        var isFirst = await IsContainKeys(context, "firstNumber", errorMessages);
+        var isSecond = await IsContainKeys(context, "secondNumber", errorMessages);
+        var isOps = await IsContainKeys(context, "operation", errorMessages);
+
+        if (!isFirst || !isSecond || !isOps)
+        {
+            await context.Response.WriteAsync(errorMessages.ToString());
+            await context.Response.CompleteAsync();
+            return;
+        }
+
+        var firstNumber = await ConvertToInt(context, "firstNumber", errorMessages);
+        var secondNumber = await ConvertToInt(context, "secondNumber", errorMessages);
+        var operation = context.Request.Query["operation"].FirstOrDefault();
         var result = await GetCalculatedResult(context, operation, firstNumber, secondNumber);
+
         await context.Response.WriteAsync(result?.ToString() ?? string.Empty);
-        await context.Response.CompleteAsync(); // Send the response back to the client
-    }
-
-    private static async Task<bool> IsContainKeys(HttpContext context, string keys)
-    {
-        if (context.Request.Query.ContainsKey(keys)) return true;
-        if (context.Response.HasStarted) return false;
-        context.Response.StatusCode = 400;
-        await context.Response.WriteAsync($"Invalid input for {keys}\n");
         await context.Response.CompleteAsync();
-        return false;
     }
 
-    private static async Task<int> ConvertToInt(HttpContext context, string keys)
+    private static Task<bool> IsContainKeys(HttpContext context, string keys, StringBuilder errorMessages)
     {
-        var numberString = context.Request.Query[keys].FirstOrDefault();        
-        if (!string.IsNullOrEmpty(numberString)) return Convert.ToInt32(numberString);
-        await HandleInvalidOperation(context, keys);
-        return 0;
+        if (context.Request.Query.ContainsKey(keys)) return Task.FromResult(true);
+        if (context.Response.HasStarted) return Task.FromResult(false);
+        context.Response.StatusCode = 400;
+        errorMessages.AppendLine($"Invalid input for {keys}");
+        return Task.FromResult(false);
+    }
+
+    private static Task<int> ConvertToInt(HttpContext context, string keys, StringBuilder errorMessages)
+    {
+        var numberString = context.Request.Query[keys].FirstOrDefault();
+        if (!string.IsNullOrEmpty(numberString))
+        {
+            return Task.FromResult(Convert.ToInt32(numberString));
+        }
+
+        if (!context.Response.HasStarted)
+        {
+            errorMessages.AppendLine($"Invalid input for {keys}");
+        }
+        return Task.FromResult(0);
     }
 
     private static async Task<long?> GetCalculatedResult(HttpContext context, string? operation, int firstNumber, int secondNumber)
