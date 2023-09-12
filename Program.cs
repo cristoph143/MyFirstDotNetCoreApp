@@ -4,6 +4,11 @@ namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
 {
+    /*
+    // Main function: Entry point of the application.
+    // It sets up a web application, defines a request handling logic,
+    // and starts the application.
+    */
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -29,14 +34,14 @@ internal abstract class Program
         app.Run();
     }
 
-    // private static async Task PastCode(HttpContext context)
-    // {
-    //     // await queryString(context);
-    //     var reader = new StreamReader(context.Request.Body);
-    //     var body = await reader.ReadToEndAsync();
-    //     string path = context.Request.Path;
-    //     var method = context.Request.Method;
-    //     // await Calculator.HttpCalculator(method, path, context);
-    //     await QueryProcessor.ProcessQuery(context, body, path, method);
-    // }
+    private static async Task PastCode(HttpContext context)
+    {
+        // await queryString(context);
+        var reader = new StreamReader(context.Request.Body);
+        var body = await reader.ReadToEndAsync();
+        string path = context.Request.Path;
+        var method = context.Request.Method;
+        await Calculator.HttpCalculator(method, path, context);
+        await QueryProcessor.ProcessQuery(context, body, path, method);
+    }
 }
