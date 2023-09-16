@@ -30,7 +30,8 @@ internal abstract class Program
 
         //middleware 2
         //app.UseMiddleware<MyCustomMiddleware>();
-        app.UseMyCustomMiddleware();
+        // app.UseMyCustomMiddleware();
+        app.UseHelloCustomMiddle();
 
         //middleware 3
         app.Run(async context => {
