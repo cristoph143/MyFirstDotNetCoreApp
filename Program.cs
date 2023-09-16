@@ -19,12 +19,15 @@ internal abstract class Program
         // enable routing
         app.UseRouting();
         // creating end points
-        app.UseEndpoints(
-            endpoints =>
-            {
-                // add endpoints
-            });
-        app.Run(async context => { await context.Response.WriteAsync("No response"); });
+        app.UseEndpoints( endpoints =>
+        {
+            // add endpoints
+            endpoints.Map("map1", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
+            endpoints.Map("map2", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
+            endpoints.MapPost("map1Post", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
+            endpoints.MapPost("map2Post", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
+        });
+        app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
     }
 }
