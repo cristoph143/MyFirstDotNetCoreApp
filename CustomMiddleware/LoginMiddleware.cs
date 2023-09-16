@@ -11,8 +11,10 @@ public class LoginMiddleware
         _next = next;
     }
 
+    // Middleware entry point that handles the login functionality.
     public async Task Invoke(HttpContext context)
     {
+        // If the request path is "/" and the method is "POST", it reads the request body,
         if (!(context.Request.Path == "/" && context.Request.Method == "POST"))
         {
             await _next(context);
@@ -25,6 +27,7 @@ public class LoginMiddleware
         var email = GetQueryValue(body, "email");
         var password = GetQueryValue(body, "password");
 
+        // validates the email and password, and performs the login logic.
         var errorMessage = BuildErrorMessage(email, password);
         if (!string.IsNullOrEmpty(errorMessage))
         {
@@ -32,11 +35,17 @@ public class LoginMiddleware
             await context.Response.WriteAsync(errorMessage);
             return;
         }
-
+        // If any validation errors occur, it returns the appropriate error response.
         if (await IsRequired(context, email, password)) return;
+        // If the login is successful, it returns a success response.
         await IsValidLogin(context, email, password);
     }
 
+    // Checks if both the email and password are present.
+    // If either the email or password is missing, it sets the response status code to 400
+    // and returns true to indicate that the validation failed.
+    // It also writes an error message to the response if both email and password are missing.
+    // Otherwise, it returns false to indicate that the validation passed.
     private static async Task<bool> IsRequired(HttpContext context, string email, string password)
     {
         var isEmail = string.IsNullOrEmpty(email);
@@ -48,6 +57,10 @@ public class LoginMiddleware
         return true;
     }
 
+    // Validates the login credentials.
+    // Compares the email and password with the valid credentials.
+    // If the credentials are valid, it writes a success message to the response.
+    // Otherwise, it sets the response status code to 400 and writes an error message.
     private static async Task IsValidLogin(HttpContext context, string email, string password)
     {
         // Valid email and password as per the requirement specification
@@ -68,12 +81,20 @@ public class LoginMiddleware
         }
     }
 
+    // Retrieves the value of a query parameter from the request body.
+    // Parses the query dictionary from the body and tries to get the value for the specified key.
+    // If the key is found, it returns the value as a string.
+    // If the key is not found, it returns null.
     private static string? GetQueryValue(string body, string key)
     {
         var queryDict = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(body);
         return !queryDict.TryGetValue(key, out var value) ? null : Convert.ToString(value[0]);
     }
 
+    // Builds an error message based on the validation results.
+    // If the email is invalid or missing, it appends an error message for 'email'.
+    // If the password is invalid or missing, it appends an error message for 'password'.
+    // Returns the constructed error message as a string.
     private static string BuildErrorMessage(string email, string password)
     {
         var sb = new StringBuilder();
@@ -86,6 +107,8 @@ public class LoginMiddleware
 // Extension method used to add the middleware to the HTTP request pipeline.
 public static class LoginMiddlewareExtensions
 {
+    // Extension method used to add the LoginMiddleware to the HTTP request pipeline.
+    // Returns the updated IApplicationBuilder instance.
     public static IApplicationBuilder UseLoginMiddleware(this IApplicationBuilder builder)
     {
         return builder.UseMiddleware<LoginMiddleware>();
