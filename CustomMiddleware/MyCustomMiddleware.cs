@@ -6,7 +6,7 @@ public class MyCustomMiddleware : IMiddleware
     {
         await context.Response.WriteAsync("MyCustomMiddleware - Starts\n");
         await next(context);
-        await  context.Response.WriteAsync("MyCustomMiddleware - Ends\n");
+        await context.Response.WriteAsync("MyCustomMiddleware - Ends\n");
     }
 }
 

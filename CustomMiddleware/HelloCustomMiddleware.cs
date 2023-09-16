@@ -5,9 +5,9 @@
 // into your project
 public class HelloCustomMiddleware
 {
-    private readonly  RequestDelegate _next;
+    private readonly RequestDelegate _next;
 
-    public  HelloCustomMiddleware(RequestDelegate next)
+    public HelloCustomMiddleware(RequestDelegate next)
     {
         _next = next;
     }
@@ -18,10 +18,10 @@ public class HelloCustomMiddleware
         string? lastName = context.Request.Query["lastName"];
 
         // checking if a valid non-empty string value exists
-        bool isFirstName = !string.IsNullOrEmpty(firstName);
-        bool isLastName = !string.IsNullOrEmpty(lastName);
-        bool isContains = isFirstName && isLastName;
-        string? fullName = isContains ? $"{firstName} {lastName}" : null;
+        var isFirstName = !string.IsNullOrEmpty(firstName);
+        var isLastName = !string.IsNullOrEmpty(lastName);
+        var isContains = isFirstName && isLastName;
+        var fullName = isContains ? $"{firstName} {lastName}" : null;
 
         await context.Response.WriteAsync(fullName != null ? "Hello World " + fullName : "");
         await _next(context);

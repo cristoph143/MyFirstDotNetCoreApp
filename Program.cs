@@ -1,5 +1,7 @@
 using MyFirstDotNetCoreApp.CustomMiddleware;
-using MyFirstDotNetCoreApp.PastCodes; 
+
+// using MyFirstDotNetCoreApp.PastCodes;
+
 namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
@@ -15,10 +17,12 @@ internal abstract class Program
         builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
         // Create an instance of the Past class
-        var past = new Past();
-        past.UseWhen(app);
+        // var past = new Past();
+        // past.UseWhen(app);
+        //Invoking custom middleware
+        app.UseLoginMiddleware();
+
+        app.Run(async context => { await context.Response.WriteAsync("No response"); });
         app.Run();
     }
-
-    
 }

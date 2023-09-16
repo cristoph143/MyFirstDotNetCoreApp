@@ -27,22 +27,22 @@ public class Past
             await context.Response.WriteAsync("Hello World 2!\n");
             await next(context);
         });
-    
+
         //middleware 1
         app.Use(async (context, next) =>
         {
             await context.Response.WriteAsync("From Middleware 1\n");
             await next(context);
         });
-    
+
         //middleware 2
         //app.UseMiddleware<MyCustomMiddleware>();
         // app.UseMyCustomMiddleware();
         app.UseHelloCustomMiddle();
-    
+
         //middleware 3
         app.Run(async context => { await context.Response.WriteAsync("From Middleware 3\n"); });
-    
+
         app.Run(async context =>
         {
             //TODO: test useWhen for this calculator
@@ -58,10 +58,10 @@ public class Past
             //     {
             //         apps.Use(async (context, next) =>
             //         {
-                        await PastCode(context);
-                //         await next(context);
-                //     });
-                // });
+            await PastCode(context);
+            //         await next(context);
+            //     });
+            // });
             await context.Response.WriteAsync("Hello World Again!\n");
         });
     }

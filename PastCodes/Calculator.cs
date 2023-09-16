@@ -30,17 +30,17 @@ public static class Calculator
     }
 
     /*
-    	CalculateResult function: Computes results based on valid inputs.
+        CalculateResult function: Computes results based on valid inputs.
         Performs requested calculations and sends the response.
         -------------------------------------------------------------------------------------
-        In the CalculateResult function, the errorMessages object is initialized as a new instance of the StringBuilder class. 
-        Then, each time the IsContainKeys function is called and a query parameter is missing, 
-        an error message is appended to the errorMessages object using the AppendLine method. 
+        In the CalculateResult function, the errorMessages object is initialized as a new instance of the StringBuilder class.
+        Then, each time the IsContainKeys function is called and a query parameter is missing,
+        an error message is appended to the errorMessages object using the AppendLine method.
         The AppendLine method adds a new line to the end of the string and appends the specified value.
-        Since errorMessages is a StringBuilder, it maintains an internal buffer to hold the characters. 
-        If there is space available in the buffer, it appends new data. Otherwise, it creates a new buffer, 
+        Since errorMessages is a StringBuilder, it maintains an internal buffer to hold the characters.
+        If there is space available in the buffer, it appends new data. Otherwise, it creates a new buffer,
         copies the old data to the new buffer, and then appends the data.
-        Once all three query parameters have been checked for existence, any error messages that were appended to errorMessages 
+        Once all three query parameters have been checked for existence, any error messages that were appended to errorMessages
         are written to the response stream using the WriteAsync method.
         -------------------------------------------------------------------------------------
     */
