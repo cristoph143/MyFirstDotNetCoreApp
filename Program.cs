@@ -14,37 +14,53 @@ internal abstract class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
-
-        app.MapGet("/hello", () => "Hello World 1!\n");
-        app.Use(async (context, next) =>
+        // MiddleWare(app);
+        app.UseWhen(context => context.Request.Query.ContainsKey("custom"),
+            app =>
+            {
+                app.Use(async (context, next) =>
+                {
+                    await context.Response.WriteAsync("Hello from Middleware Branch");
+                    await next(context);
+                });
+            });
+        app.Run(async context  =>
         {
-            await context.Response.WriteAsync("Hello World 2!\n");
-            await next(context);
-        });
-
-        //middleware 1
-        app.Use(async (context, next) => {
-            await context.Response.WriteAsync("From Middleware 1\n");
-            await next(context);
-        });
-
-        //middleware 2
-        //app.UseMiddleware<MyCustomMiddleware>();
-        // app.UseMyCustomMiddleware();
-        app.UseHelloCustomMiddle();
-
-        //middleware 3
-        app.Run(async context => {
-            await context.Response.WriteAsync("From Middleware 3\n");
-        });
-
-        app.Run(async context =>
-        {
-            // await PastCode(context);
-            await context.Response.WriteAsync("Hello World Again!\n");
+            await context.Response.WriteAsync("Hello from middleware at main chain\n");
         });
         app.Run();
     }
+
+    // private static void MiddleWare(WebApplication app)
+    // {
+    //     app.MapGet("/hello", () => "Hello World 1!\n");
+    //     app.Use(async (context, next) =>
+    //     {
+    //         await context.Response.WriteAsync("Hello World 2!\n");
+    //         await next(context);
+    //     });
+    //
+    //     //middleware 1
+    //     app.Use(async (context, next) =>
+    //     {
+    //         await context.Response.WriteAsync("From Middleware 1\n");
+    //         await next(context);
+    //     });
+    //
+    //     //middleware 2
+    //     //app.UseMiddleware<MyCustomMiddleware>();
+    //     // app.UseMyCustomMiddleware();
+    //     app.UseHelloCustomMiddle();
+    //
+    //     //middleware 3
+    //     app.Run(async context => { await context.Response.WriteAsync("From Middleware 3\n"); });
+    //
+    //     app.Run(async context =>
+    //     {
+    //         // await PastCode(context);
+    //         await context.Response.WriteAsync("Hello World Again!\n");
+    //     });
+    // }
 
     // private static async Task PastCode(HttpContext context)
     // {
