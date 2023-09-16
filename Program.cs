@@ -21,10 +21,21 @@ internal abstract class Program
             await context.Response.WriteAsync("Hello World 2!\n");
             await next(context);
         });
+
+        //middleware 1
+        app.Use(async (context, next) => {
+            await context.Response.WriteAsync("From Middleware 1\n");
+            await next(context);
+        });
+
+        //middleware 2
+        //app.UseMiddleware<MyCustomMiddleware>();
         app.UseMyCustomMiddleware();
-        app.UseMyCustomMiddleware();
-        // app.UseMiddleware<MyCustomMiddleware>();
-        // app.UseMiddleware<MyCustomMiddleware>();
+
+        //middleware 3
+        app.Run(async context => {
+            await context.Response.WriteAsync("From Middleware 3\n");
+        });
 
         app.Run(async context =>
         {
@@ -34,14 +45,14 @@ internal abstract class Program
         app.Run();
     }
 
-    private static async Task PastCode(HttpContext context)
-    {
-        // await queryString(context);
-        var reader = new StreamReader(context.Request.Body);
-        var body = await reader.ReadToEndAsync();
-        string path = context.Request.Path;
-        var method = context.Request.Method;
-        await Calculator.HttpCalculator(method, path, context);
-        await QueryProcessor.ProcessQuery(context, body, path, method);
-    }
+    // private static async Task PastCode(HttpContext context)
+    // {
+    //     // await queryString(context);
+    //     var reader = new StreamReader(context.Request.Body);
+    //     var body = await reader.ReadToEndAsync();
+    //     string path = context.Request.Path;
+    //     var method = context.Request.Method;
+    //     await Calculator.HttpCalculator(method, path, context);
+    //     await QueryProcessor.ProcessQuery(context, body, path, method);
+    // }
 }
