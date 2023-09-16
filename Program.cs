@@ -16,12 +16,14 @@ internal abstract class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
-        // Create an instance of the Past class
-        // var past = new Past();
-        // past.UseWhen(app);
-        //Invoking custom middleware
-        app.UseLoginMiddleware();
-
+        // enable routing
+        app.UseRouting();
+        // creating end points
+        app.UseEndpoints(
+            endpoints =>
+            {
+                // add endpoints
+            });
         app.Run(async context => { await context.Response.WriteAsync("No response"); });
         app.Run();
     }

@@ -6,6 +6,11 @@ public class Past
 {
     public void UseWhen(WebApplication app)
     {
+        // Create an instance of the Past class
+        // var past = new Past();
+        // past.UseWhen(app);
+        //Invoking custom middleware
+        app.UseLoginMiddleware();
         MiddleWare(app);
         app.UseWhen(context => context.Request.Query.ContainsKey("custom"),
             apps =>
