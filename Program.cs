@@ -15,10 +15,11 @@ internal abstract class Program
     */
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-        { 
-            WebRootPath = "myroot"
-        });       
+        var builder = WebApplication.CreateBuilder(args);
+        // var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        // { 
+        //     WebRootPath = "myroot"
+        // });       
         // builder.Services.AddTransient<MyCustomMiddleware>();
         // //register custom service
         // builder.Services.AddRouting(options =>
@@ -27,12 +28,10 @@ internal abstract class Program
         // });
         var app = builder.Build();
         // Create an instance of the Past class
-        var past = new Past();
-        past.UseWhen(app);
+        // var past = new Past();
+        // past.UseWhen(app);
 
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
     }
-
-   
 }
