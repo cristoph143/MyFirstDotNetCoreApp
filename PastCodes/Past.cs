@@ -6,22 +6,21 @@ public class Past
 {
     public void UseWhen(WebApplication app)
     {
-        // Create an instance of the Past class
-        // var past = new Past();
-        // past.UseWhen(app);
-        //Invoking custom middleware
-        app.UseLoginMiddleware();
-        MiddleWare(app);
-        app.UseWhen(context => context.Request.Query.ContainsKey("custom"),
-            apps =>
-            {
-                apps.Use(async (context, next) =>
-                {
-                    await context.Response.WriteAsync("Hello from Middleware Branch");
-                    await next(context);
-                });
-            });
-        app.Run(async context => { await context.Response.WriteAsync("Hello from middleware at main chain\n"); });
+        UseRouting(app);
+
+        // //Invoking custom middleware
+        // app.UseLoginMiddleware();
+        // MiddleWare(app);
+        // app.UseWhen(context => context.Request.Query.ContainsKey("custom"),
+        //     apps =>
+        //     {
+        //         apps.Use(async (context, next) =>
+        //         {
+        //             await context.Response.WriteAsync("Hello from Middleware Branch");
+        //             await next(context);
+        //         });
+        //     });
+        // app.Run(async context => { await context.Response.WriteAsync("Hello from middleware at main chain\n"); });
     }
 
     private static void MiddleWare(WebApplication app)
@@ -81,4 +80,41 @@ public class Past
         await Calculator.HttpCalculator(method, path, context);
         await QueryProcessor.ProcessQuery(context, body, path, method);
     }
+
+    private static void UseRouting(WebApplication app)
+    {
+        app.Use(async (context, next) =>
+        {
+            Endpoint? endPoint = context.GetEndpoint();
+            if (endPoint != null)
+            {
+                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
+            }
+
+            await next(context);
+        });
+        // enable routing
+        app.UseRouting();
+        app.Use(async (context, next) =>
+        {
+            Endpoint? endPoint = context.GetEndpoint();
+            if (endPoint != null)
+            {
+                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
+            }
+
+            await next(context);
+        });
+
+        // creating end points
+        app.UseEndpoints(endpoints =>
+        {
+            // add endpoints
+            endpoints.Map("map1", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
+            endpoints.Map("map2", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
+            endpoints.MapPost("map1Post", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
+            endpoints.MapPost("map2Post", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
+        });
+    }
+
 }
