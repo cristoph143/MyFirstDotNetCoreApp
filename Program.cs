@@ -2,6 +2,8 @@
 // using MyFirstDotNetCoreApp.CustomMiddleware;
 // using MyFirstDotNetCoreApp.PastCodes;
 
+using Microsoft.Extensions.FileProviders;
+
 namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
@@ -13,7 +15,10 @@ internal abstract class Program
     */
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+        { 
+            WebRootPath = "myroot"
+        });       
         // builder.Services.AddTransient<MyCustomMiddleware>();
         // //register custom service
         // builder.Services.AddRouting(options =>
@@ -26,7 +31,13 @@ internal abstract class Program
         // past.UseWhen(app);
 
         // enable routing
-        app.UseStaticFiles();
+        app.UseStaticFiles();      // webroot path(nyroot)
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "mywebroot"))
+        });  // works with "mywebroot"
+
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {

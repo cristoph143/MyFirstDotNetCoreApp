@@ -9,6 +9,7 @@
 
 
     <ItemGroup>
+      <Folder Include="myroot\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 
