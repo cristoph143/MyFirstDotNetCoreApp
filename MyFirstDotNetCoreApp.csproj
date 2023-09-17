@@ -9,8 +9,8 @@
 
 
     <ItemGroup>
-      <Folder Include="myroot\" />
-      <Folder Include="wwwroot\" />
+        <Folder Include="myroot\"/>
+        <Folder Include="wwwroot\"/>
     </ItemGroup>
 
 </Project>

@@ -130,7 +130,7 @@ public class Past
         });
     }
 
-private static void RouterConstraints(WebApplication app)
+    private static void RouterConstraints(WebApplication app)
     {
         // creating endpoints
         app.UseEndpoints(endpoints =>
