@@ -39,6 +39,13 @@ internal abstract class Program
 
                 await context.Response.WriteAsync($"Request received at {context.Request.Path} - {employeeName}");
             });
+            // products/details/1
+            endpoints.Map("/product/details/{id=1}", async context =>
+            {
+                int id = Convert.ToInt32(context.Request.RouteValues["id"]);
+
+                await context.Response.WriteAsync($"Request received at {context.Request.Path} - ID: {id}");
+            });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
