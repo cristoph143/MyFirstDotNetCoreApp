@@ -91,6 +91,11 @@ internal abstract class Program
 
                 await context.Response.WriteAsync($"sales report - {year} - {month}");
             });
+            //sales-report/2024/jan
+            endpoints.Map("sales-report/2024/jan", async context =>
+            {
+                await context.Response.WriteAsync("Sales report exclusively for 2024 - jan");
+            });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
