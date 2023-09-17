@@ -1,4 +1,5 @@
 using MyFirstDotNetCoreApp.CustomMiddleware;
+using MyFirstDotNetCoreApp.PastCodes;
 
 // using MyFirstDotNetCoreApp.PastCodes;
 
@@ -16,37 +17,32 @@ internal abstract class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddTransient<MyCustomMiddleware>();
         var app = builder.Build();
-        app.Use(async (context, next) =>
-        {
-            Microsoft.AspNetCore.Http.Endpoint? endPoint = context.GetEndpoint();
-            if (endPoint != null)
-            {
-                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
-            }
-            await next(context);
-        });
+        // Create an instance of the Past class
+        // var past = new Past();
+        // past.UseWhen(app);
+
         // enable routing
         app.UseRouting();
-        app.Use(async (context, next) =>
-        {
-            Endpoint? endPoint = context.GetEndpoint();
-            if (endPoint != null)
-            {
-                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
-            }
-            await  next(context);
-        });
 
-        // creating end points
-        app.UseEndpoints( endpoints =>
+        // creating endpoints
+        app.UseEndpoints(endpoints =>
         {
-            // add endpoints
-            endpoints.Map("map1", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
-            endpoints.Map("map2", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
-            endpoints.MapPost("map1Post", async (context) => await context.Response.WriteAsync("Hello World! Map 1"));
-            endpoints.MapPost("map2Post", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
+            endpoints.Map("files/{filename}.{extension}", async context =>
+            {
+                string? filename = context.Request.RouteValues["filename"] as string;
+                string? extension = context.Request.RouteValues["extension"] as string;
+
+                await context.Response.WriteAsync($"Request received at {context.Request.Path} - {filename} - {extension}");
+            });
+            endpoints.Map("employee/profile/{employeeName}", async context =>            {
+                string? employeeName = context.Request.RouteValues["EmployeeName"] as string;
+
+                await context.Response.WriteAsync($"Request received at {context.Request.Path} - {employeeName}");
+            });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
     }
+
+    
 }
