@@ -27,6 +27,7 @@ internal abstract class Program
         // creating endpoints
         app.UseEndpoints(endpoints =>
         {
+            //Eg: files/sample.txt
             endpoints.Map("files/{filename}.{extension}", async context =>
             {
                 string? filename = context.Request.RouteValues["filename"] as string;
@@ -34,6 +35,7 @@ internal abstract class Program
 
                 await context.Response.WriteAsync($"Request received at {context.Request.Path} - {filename} - {extension}");
             });
+            //Eg: employee/profile/john
             endpoints.Map("employee/profile/{employeeName}", async context =>            {
                 string? employeeName = context.Request.RouteValues["EmployeeName"] as string;
 
@@ -57,6 +59,12 @@ internal abstract class Program
                     DateTime reportDate = Convert.ToDateTime(context.Request.RouteValues["reportDate"]) ;
                     await context.Response.WriteAsync($"In daily-digest-report - {reportDate.ToShortDateString()}");
                 });
+            //Eg: cities/{cityId}
+            endpoints.Map("cities/{cityId:guid}", async context =>
+            {
+                Guid cityId = Guid.Parse(Convert.ToString(context.Request.RouteValues["cityId"])!);
+                await context.Response.WriteAsync($"City information - {cityId}");
+            });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
