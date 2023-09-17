@@ -1,5 +1,5 @@
 using MyFirstDotNetCoreApp.CustomMiddleware;
-using MyFirstDotNetCoreApp.PastCodes;
+// using MyFirstDotNetCoreApp.PastCodes;
 
 // using MyFirstDotNetCoreApp.PastCodes;
 
@@ -40,10 +40,10 @@ internal abstract class Program
                 await context.Response.WriteAsync($"Request received at {context.Request.Path} - {employeeName}");
             });
             // products/details/1
-            endpoints.Map("/product/details/{id?}", async context =>
+            endpoints.Map("/product/details/{id:int?}", async context =>
             {
-                bool isID = context.Request.RouteValues.ContainsKey("id");
-                if (!isID)
+                bool isId = context.Request.RouteValues.ContainsKey("id");
+                if (!isId)
                 {
                     await context.Response.WriteAsync($"Request received at {context.Request.Path} - No ID");
                     return;
@@ -51,6 +51,12 @@ internal abstract class Program
                     int id = Convert.ToInt32(context.Request.RouteValues["id"]);
                     await context.Response.WriteAsync($"Request received at {context.Request.Path} - ID: {id}");
             });
+            //daily-digest-report/{reportDate}
+            endpoints.Map("daily-digest-report/{reportDate:datetime}", async context =>
+                {
+                    DateTime reportDate = Convert.ToDateTime(context.Request.RouteValues["reportDate"]) ;
+                    await context.Response.WriteAsync($"In daily-digest-report - {reportDate.ToShortDateString()}");
+                });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
