@@ -1,6 +1,6 @@
 // using MyFirstDotNetCoreApp.CustomConstraints;
 // using MyFirstDotNetCoreApp.CustomMiddleware;
-// using MyFirstDotNetCoreApp.PastCodes;
+using MyFirstDotNetCoreApp.PastCodes;
 
 using Microsoft.Extensions.FileProviders;
 
@@ -27,26 +27,12 @@ internal abstract class Program
         // });
         var app = builder.Build();
         // Create an instance of the Past class
-        // var past = new Past();
-        // past.UseWhen(app);
+        var past = new Past();
+        past.UseWhen(app);
 
-        // enable routing
-        app.UseStaticFiles();      // webroot path(nyroot)
-        app.UseStaticFiles(new StaticFileOptions()
-        {
-            FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "mywebroot"))
-        });  // works with "mywebroot"
-
-        app.UseRouting();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.Map("/", async context =>
-            {
-                await context.Response.WriteAsync("Hello World");
-            });
-        });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
     }
+
+   
 }

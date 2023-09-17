@@ -1,4 +1,5 @@
-﻿using MyFirstDotNetCoreApp.CustomMiddleware;
+﻿using Microsoft.Extensions.FileProviders;
+using MyFirstDotNetCoreApp.CustomMiddleware;
 
 namespace MyFirstDotNetCoreApp.PastCodes;
 
@@ -7,6 +8,7 @@ public class Past
     public void UseWhen(WebApplication app)
     {
         // UseRouting(app);
+        WebFoot(app);
         RouterConstraints(app);
         // //Invoking custom middleware
         // app.UseLoginMiddleware();
@@ -21,6 +23,23 @@ public class Past
         //         });
         //     });
         // app.Run(async context => { await context.Response.WriteAsync("Hello from middleware at main chain\n"); });
+    }
+
+    private static void WebFoot(WebApplication app)
+    {
+        // enable routing
+        app.UseStaticFiles(); // webroot path(nyroot)
+        app.UseStaticFiles(new StaticFileOptions()
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "mywebroot"))
+        }); // works with "mywebroot"
+
+        app.UseRouting();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.Map("/", async context => { await context.Response.WriteAsync("Hello World"); });
+        });
     }
 
     private static void MiddleWare(WebApplication app)
