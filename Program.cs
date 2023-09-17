@@ -36,13 +36,13 @@ internal abstract class Program
                 await context.Response.WriteAsync($"Request received at {context.Request.Path} - {filename} - {extension}");
             });
             //Eg: employee/profile/john
-            endpoints.Map("employee/profile/{employeeName}", async context =>            {
+            endpoints.Map("employee/profile/{EmployeeName:length(4,7):alpha=harsha}", async context =>            {
                 string? employeeName = context.Request.RouteValues["EmployeeName"] as string;
 
                 await context.Response.WriteAsync($"Request received at {context.Request.Path} - {employeeName}");
             });
             // products/details/1
-            endpoints.Map("/product/details/{id:int?}", async context =>
+            endpoints.Map("products/details/{id:int:range(1,1000)?}", async context =>
             {
                 bool isId = context.Request.RouteValues.ContainsKey("id");
                 if (!isId)
@@ -54,7 +54,7 @@ internal abstract class Program
                     await context.Response.WriteAsync($"Request received at {context.Request.Path} - ID: {id}");
             });
             //daily-digest-report/{reportDate}
-            endpoints.Map("daily-digest-report/{reportDate:datetime}", async context =>
+            endpoints.Map("daily-digest-report/{reportdate:datetime}", async context =>
                 {
                     DateTime reportDate = Convert.ToDateTime(context.Request.RouteValues["reportDate"]) ;
                     await context.Response.WriteAsync($"In daily-digest-report - {reportDate.ToShortDateString()}");
@@ -64,6 +64,19 @@ internal abstract class Program
             {
                 Guid cityId = Guid.Parse(Convert.ToString(context.Request.RouteValues["cityId"])!);
                 await context.Response.WriteAsync($"City information - {cityId}");
+            });
+            //sales-report/2030/apr
+            endpoints.Map("/sales-report/{year:int:min(1900)}/{month:regex(^(apr|jul|oct|jan)$)}", async context =>
+            {
+                int year = Convert.ToInt32(context.Request.RouteValues["year"]);
+                string? month = Convert.ToString(context.Request.RouteValues["month"]);
+
+                if (month != "apr" && month != "jul" && month != "oct" && month != "jan")
+                {
+                    await context.Response.WriteAsync($"{month} is not allowed for sales report");
+                    return;
+                }
+                await context.Response.WriteAsync($"sales report - {year} - {month}");
             });
         });
         app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
