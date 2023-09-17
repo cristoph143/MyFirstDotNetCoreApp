@@ -35,6 +35,7 @@ public class LoginMiddleware
             await context.Response.WriteAsync(errorMessage);
             return;
         }
+
         // If any validation errors occur, it returns the appropriate error response.
         if (await IsRequired(context, email, password)) return;
         // If the login is successful, it returns a success response.

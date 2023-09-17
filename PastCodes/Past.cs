@@ -85,11 +85,8 @@ public class Past
     {
         app.Use(async (context, next) =>
         {
-            Endpoint? endPoint = context.GetEndpoint();
-            if (endPoint != null)
-            {
-                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
-            }
+            var endPoint = context.GetEndpoint();
+            if (endPoint != null) await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
 
             await next(context);
         });
@@ -97,11 +94,8 @@ public class Past
         app.UseRouting();
         app.Use(async (context, next) =>
         {
-            Endpoint? endPoint = context.GetEndpoint();
-            if (endPoint != null)
-            {
-                await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
-            }
+            var endPoint = context.GetEndpoint();
+            if (endPoint != null) await context.Response.WriteAsync($"Endpoint: {endPoint.DisplayName}\n");
 
             await next(context);
         });
@@ -116,5 +110,4 @@ public class Past
             endpoints.MapPost("map2Post", async (context) => await context.Response.WriteAsync("Hello World! Map 2"));
         });
     }
-
 }
