@@ -4,9 +4,22 @@ namespace MyFirstDotNetCoreApp.Controllers;
 
 public  class HomeController : Controller
 {
-       [Route("sayHello")]
-      public string method1()
-      {
-          return "return from method1";
-      }
+    [Route("home")]
+    [Route("/")]
+    public string Index()
+    {
+        return "Hello from Index";
+    }
+
+    [Route("about")]
+    public string About()
+    {
+        return "Hello from About";
+    }
+
+    [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
+    public string Contact()
+    {
+        return "Hello from Contact";
+    }
 }
