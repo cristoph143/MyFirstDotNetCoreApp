@@ -84,10 +84,16 @@ namespace MyFirstDotNetCoreApp.Controllers
             }
 
             //isLoggedIn should be true
-            if (Convert.ToBoolean(Request.Query["isLoggedIn"])) return File("/sample.pdf", "application/pdf");
+            if (Convert.ToBoolean(Request.Query["isLoggedIn"])) 
+            {
+                // return File("/sample.pdf", "application/pdf");
+                //return new RedirectToActionResult("Books", "Store", new { }); //302 - Found
+                return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
+            }
             // Response.StatusCode = 401;
             // return Content("User must be authenticated");
             return Unauthorized("User must be authenticated");
+
 
         }
     }
