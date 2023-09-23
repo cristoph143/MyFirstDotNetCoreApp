@@ -88,7 +88,25 @@ namespace MyFirstDotNetCoreApp.Controllers
             {
                 // return File("/sample.pdf", "application/pdf");
                 //return new RedirectToActionResult("Books", "Store", new { }); //302 - Found
-                return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
+                // return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
+                //302 - Found - RedirectToActionResult
+                //return new RedirectToActionResult("Books", "Store", new { id = bookId }); //302 - Found
+                //return RedirectToAction("Books", "Store", new { id = bookId });
+
+                //301 - Moved Permanently - RedirectToActionResult
+                //return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
+                //return RedirectToActionPermanent("Books", "Store", new { id = bookId });
+
+                //302 - Found - LocalRedirectResult
+                //return new LocalRedirectResult($"store/books/{bookId}"); //302 - Found
+                //return LocalRedirect($"store/books/{bookId}"); //302 - Found
+
+                //301 - Moved Permanently - LocalRedirectResult
+                return new LocalRedirectResult($"store/books/{bookId}", true); //301 - Moved Permanently
+                //return LocalRedirectPermanent($"store/books/{bookId}"); //301 - Moved Permanently
+
+                //return Redirect($"store/books/{bookId}"); //302 - Found
+                //return RedirectPermanent($"store/books/{bookId}"); //301 - Moved Permanently
             }
             // Response.StatusCode = 401;
             // return Content("User must be authenticated");
