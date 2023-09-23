@@ -57,5 +57,41 @@ namespace MyFirstDotNetCoreApp.Controllers
             byte[] bytes = System.IO.File.ReadAllBytes(_pathFile);
             return File(bytes, "application/pdf");
         }
+
+        [Route("book")]
+        public IActionResult book()
+        {
+            //Book id should be applied
+            if (!Request.Query.ContainsKey("bookId"))
+            {
+                Response.StatusCode = 400;
+                return Content("Book id is not supplied");
+            }
+
+            //Book id can't be empty
+            if (string.IsNullOrEmpty(Convert.ToString(Request.Query["bookid"])))
+            {
+                Response.StatusCode = 400;
+                return Content("Book id can't be null or empty");
+            }
+
+            //Book id should be between 1 to 1000
+            int bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookid"]);
+            switch (bookId)
+            {
+                case <= 0:
+                    Response.StatusCode = 400;
+                    return Content("Book id can't be less than or equal to zero");
+                case > 1000:
+                    Response.StatusCode = 400;
+                    return Content("Book id can't be greater than 1000");
+            }
+
+            //isLoggedIn should be true
+            if (Convert.ToBoolean(Request.Query["isLoggedIn"])) return File("/sample.pdf", "application/pdf");
+            Response.StatusCode = 401;
+            return Content("User must be authenticated");
+
+        }
     }
 }
