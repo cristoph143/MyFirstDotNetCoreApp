@@ -59,38 +59,35 @@ namespace MyFirstDotNetCoreApp.Controllers
         }
 
         [Route("book")]
-        public IActionResult book()
+        public IActionResult Book()
         {
             //Book id should be applied
             if (!Request.Query.ContainsKey("bookId"))
             {
-                Response.StatusCode = 400;
-                return Content("Book id is not supplied");
+                return BadRequest("Book id is not supplied");
             }
 
             //Book id can't be empty
-            if (string.IsNullOrEmpty(Convert.ToString(Request.Query["bookid"])))
+            if (string.IsNullOrEmpty(Convert.ToString(Request.Query["bookId"])))
             {
-                Response.StatusCode = 400;
-                return Content("Book id can't be null or empty");
+                return BadRequest("Book id can't be null or empty");
             }
 
             //Book id should be between 1 to 1000
-            int bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookid"]);
+            int bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookId"]);
             switch (bookId)
             {
                 case <= 0:
-                    Response.StatusCode = 400;
-                    return Content("Book id can't be less than or equal to zero");
+                    return BadRequest("Book id can't be less than or equal to zero");
                 case > 1000:
-                    Response.StatusCode = 400;
-                    return Content("Book id can't be greater than 1000");
+                    return NotFound("Book id can't be greater than 1000");
             }
 
             //isLoggedIn should be true
             if (Convert.ToBoolean(Request.Query["isLoggedIn"])) return File("/sample.pdf", "application/pdf");
-            Response.StatusCode = 401;
-            return Content("User must be authenticated");
+            // Response.StatusCode = 401;
+            // return Content("User must be authenticated");
+            return Unauthorized("User must be authenticated");
 
         }
     }
