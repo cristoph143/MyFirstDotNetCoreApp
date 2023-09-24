@@ -42,7 +42,7 @@ namespace MyFirstDotNetCoreApp.Controllers
         }
 
         [Route("bookstore/{bookId?}/{isLoggedIn?}")]
-        public IActionResult Book([DisallowNull][FromRoute] short? bookId,  [FromRoute]string isLoggedIn)
+        public IActionResult Book([DisallowNull][FromQuery] short? bookId,  [FromRoute]string isLoggedIn, Book book)
         {
             IsNull(bookId);
 
@@ -57,7 +57,9 @@ namespace MyFirstDotNetCoreApp.Controllers
                 > 1000 => NotFound("Book id can't be greater than 1000"),
                 //isLoggedIn should be true
                 _ => Convert.ToBoolean(Request.Query["isLoggedIn"])
-                    ? new RedirectResult($"/store/books/{bookId}", true)
+                    ?
+                    Content($"Book id: {bookId}, Book: {book}", "text/plain")
+                    // new RedirectResult($"/store/books/{bookId}", true)
                     : Unauthorized("User must be authenticated")
             };
         }
