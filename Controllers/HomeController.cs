@@ -8,48 +8,30 @@ namespace MyFirstDotNetCoreApp.Controllers
     {
         private readonly string _pathFile;
 
-        public HomeController(IWebHostEnvironment webHostEnvironment)
-        {
-            _pathFile = Path.Combine(webHostEnvironment.WebRootPath, "Sample.pdf");
-        }
+        public HomeController(IWebHostEnvironment webHostEnvironment) => _pathFile = Path.Combine(webHostEnvironment.WebRootPath, "Sample.pdf");
 
         [Route("home")]
         [Route("/")]
-        public ContentResult Index()
-        {
-            return Content("<h1>Welcome</h1> <h2>Hello from Index</h2>", "text/html");
-        }
+        public ContentResult Index() => Content("<h1>Welcome</h1> <h2>Hello from Index</h2>", "text/html");
 
         [Route("about")]
-        public string About()
-        {
-            return "Hello from About";
-        }
+        public string About() => "Hello from About";
 
         [Route("person")]
         public JsonResult Person()
         {
-            Person person = new Person() { Id = Guid.NewGuid(), FirstName = "James", LastName = "Smith", Age = 25 };
+            Person person = new Person { Id = Guid.NewGuid(), FirstName = "James", LastName = "Smith", Age = 25 };
             return Json(person);
         }
 
         [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
-        public string Contact()
-        {
-            return "Hello from Contact";
-        }
+        public string Contact() => "Hello from Contact";
 
         [Route("file-download")]
-        public VirtualFileResult FileDownload()
-        {
-            return File("/sample.pdf", "application/pdf");
-        }
+        public VirtualFileResult FileDownload() => File("/sample.pdf", "application/pdf");
 
         [Route("file-download2")]
-        public PhysicalFileResult FileDownload2()
-        {
-            return PhysicalFile(_pathFile, "application/pdf");
-        }
+        public PhysicalFileResult FileDownload2() => PhysicalFile(_pathFile, "application/pdf");
 
         [Route("file-download3")]
         public FileContentResult FileDownload3()
@@ -62,57 +44,19 @@ namespace MyFirstDotNetCoreApp.Controllers
         public IActionResult Book()
         {
             //Book id should be applied
-            if (!Request.Query.ContainsKey("bookId"))
-            {
-                return BadRequest("Book id is not supplied");
-            }
-
-            //Book id can't be empty
+            if (!Request.Query.ContainsKey("bookId")) return BadRequest("Book id is not supplied");
             if (string.IsNullOrEmpty(Convert.ToString(Request.Query["bookId"])))
-            {
                 return BadRequest("Book id can't be null or empty");
-            }
-
-            //Book id should be between 1 to 1000
             int bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookId"]);
-            switch (bookId)
+            return bookId switch
             {
-                case <= 0:
-                    return BadRequest("Book id can't be less than or equal to zero");
-                case > 1000:
-                    return NotFound("Book id can't be greater than 1000");
-            }
-
-            //isLoggedIn should be true
-            if (Convert.ToBoolean(Request.Query["isLoggedIn"])) 
-            {
-                // return File("/sample.pdf", "application/pdf");
-                //return new RedirectToActionResult("Books", "Store", new { }); //302 - Found
-                // return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
-                //302 - Found - RedirectToActionResult
-                //return new RedirectToActionResult("Books", "Store", new { id = bookId }); //302 - Found
-                //return RedirectToAction("Books", "Store", new { id = bookId });
-
-                //301 - Moved Permanently - RedirectToActionResult
-                //return new RedirectToActionResult("Books", "Store", new { }, permanent: true); //301 - Moved Permanently
-                //return RedirectToActionPermanent("Books", "Store", new { id = bookId });
-
-                //302 - Found - LocalRedirectResult
-                //return new LocalRedirectResult($"store/books/{bookId}"); //302 - Found
-                //return LocalRedirect($"store/books/{bookId}"); //302 - Found
-
-                //301 - Moved Permanently - LocalRedirectResult
-                return new LocalRedirectResult($"store/books/{bookId}", true); //301 - Moved Permanently
-                //return LocalRedirectPermanent($"store/books/{bookId}"); //301 - Moved Permanently
-
-                //return Redirect($"store/books/{bookId}"); //302 - Found
-                //return RedirectPermanent($"store/books/{bookId}"); //301 - Moved Permanently
-            }
-            // Response.StatusCode = 401;
-            // return Content("User must be authenticated");
-            return Unauthorized("User must be authenticated");
-
-
+                <= 0 => BadRequest("Book id can't be less than or equal to zero"),
+                > 1000 => NotFound("Book id can't be greater than 1000"),
+                //isLoggedIn should be true
+                _ => Convert.ToBoolean(Request.Query["isLoggedIn"])
+                    ? new RedirectResult($"/store/books/{bookId}", true)
+                    : Unauthorized("User must be authenticated")
+            };
         }
     }
 }

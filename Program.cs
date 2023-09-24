@@ -15,8 +15,6 @@ internal abstract class Program
         app.UseStaticFiles();
         app.UseRouting();
         app.MapControllers();
-
-        app.Run(async context => { await context.Response.WriteAsync($"Request received at {context.Request.Path}"); });
         app.Run();
     }
 }

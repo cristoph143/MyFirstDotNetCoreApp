@@ -4,7 +4,7 @@ namespace MyFirstDotNetCoreApp.Controllers;
 
 public class StoreController : Controller
 {
-    [Route("store/books/{id}")]
+    [Route("store/books/{id:int}")]
     public IActionResult Books()
     {
         int id = Convert.ToInt32(Request.RouteValues["id"]);
