@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Mvc;
 using MyFirstDotNetCoreApp.Models;
 
 namespace MyFirstDotNetCoreApp.Controllers
@@ -40,14 +41,16 @@ namespace MyFirstDotNetCoreApp.Controllers
             return File(bytes, "application/pdf");
         }
 
-        [Route("book")]
-        public IActionResult Book()
+        [Route("bookstore/{bookId?}/{isLoggedIn?}")]
+        public IActionResult Book([DisallowNull] short? bookId, string isLoggedIn)
         {
+            IsNull(bookId, isLoggedIn);
+
             //Book id should be applied
             if (!Request.Query.ContainsKey("bookId")) return BadRequest("Book id is not supplied");
             if (string.IsNullOrEmpty(Convert.ToString(Request.Query["bookId"])))
                 return BadRequest("Book id can't be null or empty");
-            int bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookId"]);
+            bookId = Convert.ToInt16(ControllerContext.HttpContext.Request.Query["bookId"]);
             return bookId switch
             {
                 <= 0 => BadRequest("Book id can't be less than or equal to zero"),
@@ -57,6 +60,18 @@ namespace MyFirstDotNetCoreApp.Controllers
                     ? new RedirectResult($"/store/books/{bookId}", true)
                     : Unauthorized("User must be authenticated")
             };
+        }
+
+        private static void IsNull(short? bookId, string isLoggedIn)
+        {
+            if (isLoggedIn == null) throw new ArgumentNullException(nameof(isLoggedIn));
+            switch (bookId)
+            {
+                case null:
+                    throw new ArgumentNullException(nameof(bookId));
+                case <= 0:
+                    throw new ArgumentOutOfRangeException(nameof(bookId));
+            }
         }
     }
 }
