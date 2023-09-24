@@ -21,7 +21,9 @@ namespace MyFirstDotNetCoreApp.Controllers
         [Route("register")]
         public IActionResult Index(Person person)
         {
-            return Content($"{person}");
+            if (ModelState.IsValid) return Content($"{person}");
+            string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
+            return BadRequest(errors);
         }
 
         [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
