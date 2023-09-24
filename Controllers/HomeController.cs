@@ -18,11 +18,10 @@ namespace MyFirstDotNetCoreApp.Controllers
         [Route("about")]
         public string About() => "Hello from About";
 
-        [Route("person")]
-        public JsonResult Person()
+        [Route("register")]
+        public IActionResult Index(Person person)
         {
-            Person person = new Person { Id = Guid.NewGuid(), FirstName = "James", LastName = "Smith", Age = 25 };
-            return Json(person);
+            return Content($"{person}");
         }
 
         [Route("contact-us/{mobile:regex(^\\d{{10}}$)}")]
@@ -42,7 +41,7 @@ namespace MyFirstDotNetCoreApp.Controllers
         }
 
         [Route("bookstore/{bookId?}/{isLoggedIn?}")]
-        public IActionResult Book([DisallowNull][FromQuery] short? bookId,  [FromRoute]string isLoggedIn, Book book)
+        public IActionResult Book([DisallowNull][FromRoute] short? bookId,  [FromRoute]string isLoggedIn, Book book)
         {
             IsNull(bookId);
 
