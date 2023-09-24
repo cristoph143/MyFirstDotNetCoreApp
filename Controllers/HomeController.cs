@@ -42,9 +42,9 @@ namespace MyFirstDotNetCoreApp.Controllers
         }
 
         [Route("bookstore/{bookId?}/{isLoggedIn?}")]
-        public IActionResult Book([DisallowNull] short? bookId, string isLoggedIn)
+        public IActionResult Book([DisallowNull][FromRoute] short? bookId,  [FromRoute]string isLoggedIn)
         {
-            IsNull(bookId, isLoggedIn);
+            IsNull(bookId);
 
             //Book id should be applied
             if (!Request.Query.ContainsKey("bookId")) return BadRequest("Book id is not supplied");
@@ -62,9 +62,8 @@ namespace MyFirstDotNetCoreApp.Controllers
             };
         }
 
-        private static void IsNull(short? bookId, string isLoggedIn)
+        private static void IsNull(short? bookId)
         {
-            if (isLoggedIn == null) throw new ArgumentNullException(nameof(isLoggedIn));
             switch (bookId)
             {
                 case null:
