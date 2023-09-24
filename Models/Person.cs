@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MyFirstDotNetCoreApp.CustomValidators;
 
 namespace MyFirstDotNetCoreApp.Models;
@@ -35,6 +36,7 @@ public class Person : IValidatableObject
 
 
         [MinimumYearValidator(2005)]
+        [BindNever]
         public DateTime? DateOfBirth { get; set; }
         public DateTime? FromDate { get; set; }
 
