@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
+using MyFirstDotNetCoreApp.CustomModelBinders;
 using MyFirstDotNetCoreApp.Models;
 
 namespace MyFirstDotNetCoreApp.Controllers
@@ -20,7 +21,7 @@ namespace MyFirstDotNetCoreApp.Controllers
 
         [Route("register")]
         //[Bind(nameof(Person.PersonName), nameof(Person.Email), nameof(Person.Password), nameof(Person.ConfirmPassword))]
-        public IActionResult Index([FromBody] Person person)
+        public IActionResult Index([FromBody] [ModelBinder(BinderType = typeof(PersonModelBinder))]Person person)
         {
             if (ModelState.IsValid) return Content($"{person}");
             string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));

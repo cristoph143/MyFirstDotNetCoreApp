@@ -36,7 +36,7 @@ public class Person : IValidatableObject
 
 
         [MinimumYearValidator(2005)]
-        [BindNever]
+        // [BindNever]
         public DateTime? DateOfBirth { get; set; }
         public DateTime? FromDate { get; set; }
 
