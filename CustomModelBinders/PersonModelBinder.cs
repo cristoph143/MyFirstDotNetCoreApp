@@ -7,7 +7,7 @@ public class PersonModelBinder : IModelBinder
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        Person person = new Person();
+        var person = new Person();
 
         //FirstName and LastName
         if (bindingContext.ValueProvider.GetValue("FirstName").Length > 0)
@@ -45,7 +45,6 @@ public class PersonModelBinder : IModelBinder
         //DateOfBirth
         if (bindingContext.ValueProvider.GetValue("DateOfBirth").Length > 0)
             person.DateOfBirth = Convert.ToDateTime(bindingContext.ValueProvider.GetValue("DateOfBirth").FirstValue);
-
 
 
         bindingContext.Result = ModelBindingResult.Success(person);
