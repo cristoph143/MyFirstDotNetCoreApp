@@ -20,7 +20,7 @@ namespace MyFirstDotNetCoreApp.Controllers
 
         [Route("register")]
         //[Bind(nameof(Person.PersonName), nameof(Person.Email), nameof(Person.Password), nameof(Person.ConfirmPassword))]
-        public IActionResult Index(Person person)
+        public IActionResult Index([FromBody] Person person)
         {
             if (ModelState.IsValid) return Content($"{person}");
             string errors = string.Join("\n", ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
