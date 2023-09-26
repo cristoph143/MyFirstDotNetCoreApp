@@ -31,10 +31,9 @@ public class HomeController : Controller
     [Route("register")]
     //[Bind(nameof(Person.PersonName), nameof(Person.Email), nameof(Person.Password), nameof(Person.ConfirmPassword))]
     // public IActionResult Index([FromBody] [ModelBinder(BinderType = typeof(PersonModelBinder))] Person person)
-    public IActionResult Index(Person person)
-
+    public IActionResult Index(Person person, [FromHeader(Name = "User-Agent")] string userAgent)
     {
-        if (ModelState.IsValid) return Content($"{person}");
+        if (ModelState.IsValid) return Content($"{person}, {userAgent}");
         var errors = string.Join("\n",
             ModelState.Values.SelectMany(value => value.Errors).Select(err => err.ErrorMessage));
         return BadRequest(errors);
