@@ -46,10 +46,12 @@ public class Person : IValidatableObject
 
     public int? Age { get; set; }
 
+    public List<string?> Tags { get; set; } = new();
+
     public override string ToString()
     {
         return
-            $"Person object - Person name: {PersonName}, Email: {Email}, Phone: {Phone}, Password: {Password}, Confirm Password: {ConfirmPassword}, Price: {Price}, DateOfBirth: {DateOfBirth} From Date: {FromDate} To Date: {ToDate}";
+            $"Person object - Person name: {PersonName}, Email: {Email}, Phone: {Phone}, Password: {Password}, Confirm Password: {ConfirmPassword}, Price: {Price}, DateOfBirth: {DateOfBirth} From Date: {FromDate} To Date: {ToDate} Tags: {Tags}";
     }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

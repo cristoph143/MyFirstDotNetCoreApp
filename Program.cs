@@ -13,7 +13,7 @@ internal abstract class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllers(options => {
-            options.ModelBinderProviders.Insert(0, new PersonBinderProvider());
+            // options.ModelBinderProviders.Insert(0, new PersonBinderProvider());
         });        
         builder.Services.AddControllers().AddXmlSerializerFormatters();
 
