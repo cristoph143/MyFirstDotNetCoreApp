@@ -1,8 +1,7 @@
 ﻿@using MyFirstDotNetCoreApp.Models
 @{
     const string appTitle = "Asp.Net Core Demo App";
-    var person = new Person { Name = "John", DateOfBirth = Convert.ToDateTime("2004-07-01") };
-    double  age = Math.Round((DateTime.Now - person.DateOfBirth).TotalDays / 365.25); 
+    Person person = new Person() { Name = "John", DateOfBirth = null, PersonGender = Gender.Female };
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +18,22 @@
 }
 else
 {
+    double age = Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25);
     <h3>@age years old</h3>
-}
+}      
+@switch (person.PersonGender)
+    {
+        case Gender.Male:
+            <p>November 19 is International Men's Day</p>
+            break;
+        case Gender.Female:
+            <p>March 8 is International Women's Day</p>
+            break;
+        case Gender.Other:
+            <p>March 31 is International Transgenders Day</p>
+            break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
 </body>
 </html>
