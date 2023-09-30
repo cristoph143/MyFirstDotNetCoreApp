@@ -2,9 +2,10 @@
 @{
     const string appTitle = "Asp.Net Core Demo App";
     var person = new Person { Name = "John", DateOfBirth = Convert.ToDateTime("2004-07-01") };
+    double  age = Math.Round((DateTime.Now - person.DateOfBirth).TotalDays / 365.25); 
 }
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>@appTitle</title>
     <meta charset="utf-8"/>
@@ -12,9 +13,13 @@
 <body>
 <h1>Welcome</h1>
 <h2>Hello @person.Name</h2>
-@{
-    var age = Math.Round((DateTime.Now - person.DateOfBirth).TotalDays / 365.25);
+@if (person.DateOfBirth == null)
+{
+    <h3>Date of birth is unknown</h3>
 }
-<h3>@age years old</h3>
+else
+{
+    <h3>@age years old</h3>
+}
 </body>
 </html>
