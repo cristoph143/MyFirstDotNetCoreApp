@@ -1,10 +1,20 @@
-﻿<!DOCTYPE html>
-<html lang="">
+﻿@using MyFirstDotNetCoreApp.Models
+@{
+    const string appTitle = "Asp.Net Core Demo App";
+    var person = new Person { Name = "John", DateOfBirth = Convert.ToDateTime("2004-07-01") };
+}
+<!DOCTYPE html>
+<html>
 <head>
-    <title>Asp.Net Core App</title>
+    <title>@appTitle</title>
     <meta charset="utf-8"/>
 </head>
 <body>
-Welcome
+<h1>Welcome</h1>
+<h2>Hello @person.Name</h2>
+@{
+    var age = Math.Round((DateTime.Now - person.DateOfBirth).TotalDays / 365.25);
+}
+<h3>@age years old</h3>
 </body>
 </html>
