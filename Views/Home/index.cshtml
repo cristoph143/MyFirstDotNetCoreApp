@@ -52,6 +52,19 @@ else
                 <span>@persons.DateOfBirth.Value.ToString("MM/dd/yyyy")</span>
             }
         </div>
+    }         
+@for (int i = 0; i < 2; i++)
+    {
+        Person persons = people[i];
+        <div>
+            @persons.Name
+            <span>, </span>
+            <span>@persons.PersonGender</span>
+            @if (persons.DateOfBirth != null)
+            {
+                <span>@persons.DateOfBirth.Value.ToString("MM/dd/yyyy")</span>
+            }
+        </div>
     }
 </body>
 </html>
