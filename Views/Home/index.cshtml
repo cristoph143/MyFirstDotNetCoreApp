@@ -1,4 +1,5 @@
 ﻿@using MyFirstDotNetCoreApp.Models
+@model IEnumerable<Person>
 @* @{
 const string appTitle = "Asp.Net Core Demo App";
 var person = new Person() { Name = "John", DateOfBirth = null, PersonGender = Gender.Female };
@@ -33,7 +34,7 @@ var alertMessage = $"<script>alert('{people.Count} people found')</script>";
     <meta charset="utf-8"/>
     <link href="~/StyleSheet.css" rel="stylesheet"/> *@
     @* <title>@ViewData["appTitle"]</title> *@
-     <title>@ViewBag.appTitle</title>
+    <title>@ViewBag.appTitle</title>
     <meta charset="utf-8" />
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
@@ -42,31 +43,33 @@ var alertMessage = $"<script>alert('{people.Count} people found')</script>";
     @* @Html.Raw(alertMessage) *@
     <div class="page-content">
         <h1>Welcome</h1>
-        @{
-            List<Person>? people = (List<Person>?)ViewData["people"];
-        }
-
+        @* @{
+        List<Person>? people = (List<Person>?)ViewData["people"];
+        } *@
+        @*
         @if (people != null)
+        { *@
+        @* @foreach (Person person1 in people) *@
+        @foreach (Person person1 in Model)
         {
-            @foreach (Person person1 in people)
-            {
-                <div class="box float-left w-50">
-                    <h3>@person1.Name</h3>
-                    <table class="table w-100">
-                        <tbody>
-                            <tr>
-                                <td>Gender</td>
-                                <td>@person1.PersonGender</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth</td>
-                                <td>@person1?.DateOfBirth.Value.ToString("MM/dd/yyyy")</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            }
+            <div class="box float-left w-50">
+                <h3>@person1.Name</h3>
+                <table class="table w-100">
+                    <tbody>
+                        <tr>
+                            <td>Gender</td>
+                            <td>@person1.PersonGender</td>
+                        </tr>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>@person1?.DateOfBirth.Value.ToString("MM/dd/yyyy")</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/person-details/@person1.Name">Details</a>
+            </div>
         }
+        @* } *@
 </body>
 
 </html>
