@@ -1,84 +1,71 @@
 ﻿@using MyFirstDotNetCoreApp.Models
-@{
-    const string appTitle = "Asp.Net Core Demo App";
-    Person person = new Person() { Name = "John", DateOfBirth = null, PersonGender = Gender.Female };
-    List<Person> people = new List<Person>()
-    {
-        new() { Name = "John", DateOfBirth = DateTime.Parse("2000-05-06"), PersonGender = Gender.Male},
-        new() { Name = "Linda", DateOfBirth = DateTime.Parse("2005-01-09"), PersonGender = Gender.Female},
-        new() { Name = "Susan", DateOfBirth = DateTime.Parse("2008-07-12"), PersonGender = Gender.Other}
-    };
-}               
+@* @{
+const string appTitle = "Asp.Net Core Demo App";
+var person = new Person() { Name = "John", DateOfBirth = null, PersonGender = Gender.Female };
+var people = new List<Person>()
+{
+new() { Name = "John", DateOfBirth = DateTime.Parse("2000-05-06"), PersonGender = Gender.Male },
+new() { Name = "Linda", DateOfBirth = DateTime.Parse("2005-01-09"), PersonGender = Gender.Female },
+new() { Name = "Susan", DateOfBirth = DateTime.Parse("2008-07-12"), PersonGender = Gender.Other }
+};
+}
+
 @functions
 {
-    // string Name { get; set; } = "Hello name";
+// string Name { get; set; } = "Hello name";
 }
+
 @{
-    //method
-    double? GetAge(DateTime? dateOfBirth) => dateOfBirth is not null ? Math.Round((DateTime.Now - dateOfBirth.Value).TotalDays / 365.25) : null;
-    int x = 10;
-    string alertMessage = $"<script>alert('{people.Count} people found')</script>";
+//method
+double? GetAge(DateTime? dateOfBirth)
+{
+return dateOfBirth is not null ? Math.Round((DateTime.Now - dateOfBirth.Value).TotalDays / 365.25) : null;
 }
-<!DOCTYPE html>
+
+var x = 10;
+var alertMessage = $"<script>alert('{people.Count} people found')</script>";
+}
+<!DOCTYPE html> *@
 <html lang="en">
+
 <head>
-    <title>@appTitle</title>
+    @* <title>@appTitle</title>
     <meta charset="utf-8"/>
+    <link href="~/StyleSheet.css" rel="stylesheet"/> *@
+    <title>@ViewData["appTitle"]</title>
+    <meta charset="utf-8" />
+    <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
-<body>   
-@Html.Raw(alertMessage)
-<h1>Welcome</h1>
-<h2>Hello @person.Name</h2>
-@if (person.DateOfBirth == null)
-{
-    <h3>Date of birth is unknown</h3>
-}
-else
-{
-    double age = Math.Round((DateTime.Now - person.DateOfBirth.Value).TotalDays / 365.25);
-    <h3>@age years old</h3>
-}      
-@switch (person.PersonGender)
-    {
-        case Gender.Male:
-            <p>November 19 is International Men's Day</p>
-            break;
-        case Gender.Female:
-            <p>March 8 is International Women's Day</p>
-            break;
-        case Gender.Other:
-            <p>March 31 is International Transgenders Day</p>
-            break;
-        default:
-            throw new ArgumentOutOfRangeException();
-    }  
-@foreach (var persons in people)
-    {
-        <div>
-            @persons.Name
-            <span>, </span>
-            <span>@person.PersonGender</span>
-            @if (persons.DateOfBirth != null)
+
+<body>
+    @* @Html.Raw(alertMessage) *@
+    <div class="page-content">
+        <h1>Welcome</h1>
+        @{
+            List<Person>? people = (List<Person>?)ViewData["people"];
+        }
+
+        @if (people != null)
+        {
+            @foreach (Person person1 in people)
             {
-                <span>@persons.DateOfBirth.Value.ToString("MM/dd/yyyy")</span>
+                <div class="box float-left w-50">
+                    <h3>@person1.Name</h3>
+                    <table class="table w-100">
+                        <tbody>
+                            <tr>
+                                <td>Gender</td>
+                                <td>@person1.PersonGender</td>
+                            </tr>
+                            <tr>
+                                <td>Date of Birth</td>
+                                <td>@person1?.DateOfBirth.Value.ToString("MM/dd/yyyy")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             }
-        </div>
-    }         
-@for (int i = 0; i < 2; i++)
-    {
-        Person persons = people[i];
-        @*<span>Hello to</span>*@
-        @:Hello to
-        <div>
-            @persons.Name
-            <span>, </span>
-            <span>@persons.PersonGender</span>
-            @if (persons.DateOfBirth != null)
-            {
-                <span>@persons.DateOfBirth.Value.ToString("MM/dd/yyyy")</span>
-                <span>@GetAge(persons.DateOfBirth) years old</span>
-            }
-        </div>
-    }
+        }
 </body>
+
 </html>
