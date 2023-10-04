@@ -25,7 +25,7 @@ namespace MyFirstDotNetCoreApp.Controllers
             return View();
         }
 
-        [HttpGet("/search-products")]
+        [Route("/search-products/{ProductID?}")]        
         public IActionResult Search()
         {
             return View();
