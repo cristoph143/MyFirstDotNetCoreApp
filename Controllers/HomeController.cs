@@ -20,12 +20,20 @@ public class HomeController : Controller
     [Route("/")]
     public IActionResult Index()
     {
+        ViewData["ListTitle"] = "Cities";
+        ViewData["ListItems"] = new List<string>() { 
+        "Paris",
+        "New York",
+        "New Mumbai",
+        "Rome"
+        };
         return View();
     }
 
     [Route("/about-company")]
     public IActionResult About()
     {
+        ViewBag.ListItems = new List<string> { "Item 1", "Item 2", "Item 3" };
         return View();
     }
 
