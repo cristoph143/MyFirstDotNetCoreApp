@@ -67,8 +67,8 @@ body
 
 .page-content
 {
-    padding: 10px;
     min-height: 90vh;
+    padding: 15px 20px;
 }
 
 .full-size-height
@@ -139,6 +139,16 @@ body
 .w-100
 {
     width: 100%;
+}
+
+.grey-back
+{
+    background-color: #dcdcdc;
+}
+
+.white-back
+{
+    background-color: #ffffff;
 }
 
 .text-green
@@ -215,7 +225,6 @@ body
 {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 20px;
     align-content: stretch;
     align-items: stretch;
 }
@@ -223,9 +232,21 @@ body
 .flex > div
 {
     padding: 15px;
-    border-radius: 8px;
-    border: 2px solid #d3d1d1;
-    box-shadow: 0px 0px 3px 2px #ffffff;
+}
+
+.flex-1
+{
+    flex: 1 auto;
+}
+
+.flex-2
+{
+    flex: 2 auto;
+}
+
+.flex-3
+{
+    flex: 3 auto;
 }
 
 @media screen and (min-width: 1000px)
