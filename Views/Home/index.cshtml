@@ -8,6 +8,14 @@
         new Person() { Name = "Linda", DateOfBirth = DateTime.Parse("2005-01-09"), PersonGender = Gender.Female},
         new Person() { Name = "Susan", DateOfBirth = DateTime.Parse("2008-07-12"), PersonGender = Gender.Other}
     };
+} 
+@functions{
+    //method
+    double? GetAge(DateTime? dateOfBirth) => dateOfBirth is not null ? Math.Round((DateTime.Now - dateOfBirth.Value).TotalDays / 365.25) : null;
+
+    int x = 10;
+
+    string Name { get; set; } = "Hello name";
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +73,7 @@ else
             @if (persons.DateOfBirth != null)
             {
                 <span>@persons.DateOfBirth.Value.ToString("MM/dd/yyyy")</span>
+                <span>@GetAge(persons.DateOfBirth) years old</span>
             }
         </div>
     }
