@@ -32,7 +32,8 @@ var alertMessage = $"<script>alert('{people.Count} people found')</script>";
     @* <title>@appTitle</title>
     <meta charset="utf-8"/>
     <link href="~/StyleSheet.css" rel="stylesheet"/> *@
-    <title>@ViewData["appTitle"]</title>
+    @* <title>@ViewData["appTitle"]</title> *@
+     <title>@ViewBag.appTitle</title>
     <meta charset="utf-8" />
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>

@@ -17,7 +17,8 @@ public class HomeController : Controller
             new() { Name = "Linda", DateOfBirth = DateTime.Parse("2005-01-09"), PersonGender = Gender.Female},
             new() { Name = "Susan", DateOfBirth = DateTime.Parse("2008-07-12"), PersonGender = Gender.Other}
         };
-        ViewData["people"] = people;
+        // ViewData["people"] = people;
+        ViewBag.people = people;
         return View(); //Views/Home/Index.cshtml
         //return View("abc"); //abc.cshtml
         //return new ViewResult() { ViewName = "abc" };
