@@ -1,3 +1,6 @@
+@{
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
 <!DOCTYPE html>
 
 <html>
@@ -21,14 +24,13 @@
   </div>
 
   <div class="page-content">
-   @RenderBody()
+            @RenderBody()
   </div>
 
   <div class="footer-content">
-      @RenderSection("footer_section", false)
+            @RenderSection("footer_section", false)
   </div>
  </div>
 
- 
 </body>
 </html>
