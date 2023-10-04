@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -23,22 +18,23 @@ namespace MyFirstDotNetCoreApp.Controllers
         {
             return View("Error!");
         }
-        [Route("products")]
+
+        [HttpGet("/products")]
         public IActionResult Index()
         {
-        return View();
+            return View();
         }
 
-        [Route("search-products")]
+        [HttpGet("/search-products")]
         public IActionResult Search()
         {
-        return View();
+            return View();
         }
 
-        [Route("order-product")]
+        [HttpGet("/order-product")]
         public IActionResult Order()
         {
-        return View();
+            return View();
         }
     }
 }
