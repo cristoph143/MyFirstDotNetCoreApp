@@ -1,13 +1,22 @@
-<div class="list-container">
-    @{
-        @* ViewBag.ListTitle = "Updated"; *@
-    }
+@model ListModel
 
-    <h3>@ViewBag.ListTitle</h3>
+<div class="list-container">
+    <h3>@if (Model != null) { @Model.ListTitle } else { @ViewBag.ListTitle }</h3>
     <ul class="list">
-        @foreach (string item in ViewBag.ListItems)
+        @if (Model != null)
         {
-            <li>@item</li>
+            foreach (string item in Model.ListItems)
+            {
+                <li>@item</li>
+            }
+        }
+        else
+        {
+            var listItems = ViewBag.ListItems as List<string> ?? new List<string>();
+            foreach (string item in listItems)
+            {
+                <li>@item</li>
+            }
         }
     </ul>
 </div>

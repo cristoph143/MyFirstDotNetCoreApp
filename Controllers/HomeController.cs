@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MyFirstDotNetCoreApp.Models;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
@@ -21,7 +22,7 @@ public class HomeController : Controller
     public IActionResult Index()
     {
         ViewData["ListTitle"] = "Cities";
-        ViewData["ListItems"] = new List<string>() { 
+        ViewData["ListItems"] = new List<string>() {
         "Paris",
         "New York",
         "New Mumbai",
@@ -33,7 +34,6 @@ public class HomeController : Controller
     [Route("/about-company")]
     public IActionResult About()
     {
-        ViewBag.ListItems = new List<string> { "Item 1", "Item 2", "Item 3" };
         return View();
     }
 
