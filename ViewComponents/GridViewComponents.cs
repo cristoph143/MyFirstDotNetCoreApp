@@ -16,8 +16,8 @@ namespace MyFirstDotNetCoreApp.ViewComponents
                 new Person() { PersonName = "William", JobTitle = "Clerk" },
                 }
             };
-            ViewData["Grid"] = model;
-            return View("Sample"); //invoked a partial view Views/Shared/Components/Grid/Default.cshtml
+            // ViewData["Grid"] = model;
+            return View("Sample", model); //invoked a partial view Views/Shared/Components/Grid/Default.cshtml
         }
     }
 }
