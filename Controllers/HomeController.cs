@@ -58,4 +58,21 @@ public class HomeController : Controller
 
         return PartialView("_ListPartialView", listModel);
     }
+
+    [Route("/friends-list")]
+    public IActionResult LoadFriendsList()
+    {
+        PersonGridModel personGridModel = new PersonGridModel()
+        {
+            GridTitle = "Friends",
+            Persons = new List<Person>()
+            {
+                new Person() { PersonName = "Mia", JobTitle = "Developer" },
+                new Person() { PersonName = "Emma", JobTitle = "UI Designer" },
+                new Person() { PersonName = "Avva", JobTitle = "QA" }
+            }
+        };
+
+        return ViewComponent("Grid", new { grid = personGridModel });
+    }
 }
