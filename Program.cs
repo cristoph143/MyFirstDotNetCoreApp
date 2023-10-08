@@ -1,3 +1,7 @@
+using ServiceContracts;
+using Services;
+
+
 namespace MyFirstDotNetCoreApp;
 
 internal abstract class Program
@@ -11,6 +15,11 @@ internal abstract class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllersWithViews();
+        builder.Services.Add(new ServiceDescriptor(
+            typeof(ICitiesService),
+            typeof(CitiesService),
+            ServiceLifetime.Transient
+        ));
         var app = builder.Build();
         app.UseStaticFiles();
         app.UseRouting();
