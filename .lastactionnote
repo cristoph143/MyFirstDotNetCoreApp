@@ -2,12 +2,12 @@
   "text": "Either it\u0027s your first launch, or you haven\u0027t left a note last time",
   "projectName": "MyFirstDotNetCoreApp",
   "files": [
-    "WeatherController.cs",
-    "_Layout.cshtml",
-    "_ListPartialView.cshtml",
-    "HomeController.cs",
-    "About.cshtml"
+    "Program.cs",
+    "ProductsController.cs",
+    "About.cshtml",
+    "_ViewStart.cshtml",
+    "Services.deps.json"
   ],
-  "fileCounter": 17,
-  "date": "Oct 4, 2023, 4:27:54 PM"
+  "fileCounter": 14,
+  "date": "Oct 8, 2023, 3:11:26 PM"
 }

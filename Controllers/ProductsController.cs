@@ -1,40 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace MyFirstDotNetCoreApp.Controllers
+namespace MyFirstDotNetCoreApp.Controllers;
+
+[Route("[controller]")]
+public class ProductsController : Controller
 {
-    [Route("[controller]")]
-    public class ProductsController : Controller
+    private readonly ILogger<ProductsController> _logger;
+
+    public ProductsController(ILogger<ProductsController> logger)
     {
-        private readonly ILogger<ProductsController> _logger;
+        _logger = logger;
+    }
 
-        public ProductsController(ILogger<ProductsController> logger)
-        {
-            _logger = logger;
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View("Error!");
+    }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View("Error!");
-        }
+    [HttpGet("/products")]
+    public IActionResult Index()
+    {
+        return View();
+    }
 
-        [HttpGet("/products")]
-        public IActionResult Index()
-        {
-            return View();
-        }
+    [Route("/search-products/{ProductID?}")]
+    public IActionResult Search()
+    {
+        return View();
+    }
 
-        [Route("/search-products/{ProductID?}")]        
-        public IActionResult Search()
-        {
-            return View();
-        }
-
-        [HttpGet("/order-product")]
-        public IActionResult Order()
-        {
-            return View();
-        }
+    [HttpGet("/order-product")]
+    public IActionResult Order()
+    {
+        return View();
     }
 }

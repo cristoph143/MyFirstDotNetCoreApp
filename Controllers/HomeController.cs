@@ -1,32 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFirstDotNetCoreApp.Models;
+using Services;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
 public class HomeController : Controller
 {
-    public ILogger<HomeController> Logger1 { get; }
-
+    private readonly CitiesService _citiesService;
     public HomeController(ILogger<HomeController> logger)
     {
         Logger1 = logger;
+        _citiesService = new CitiesService();
     }
+
+    public ILogger<HomeController> Logger1 { get; }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View("Error!");
     }
+
+    [Route("/get-cities")]
+    public IActionResult GetCities()
+    {
+        var cities1 = _citiesService.GetCities();
+        return View(cities1);
+    }
+
     [Route("/")]
     public IActionResult Index()
     {
         ViewData["ListTitle"] = "Cities";
-        ViewData["ListItems"] = new List<string>() {
-        "Paris",
-        "New York",
-        "New Mumbai",
-        "Rome"
+        ViewData["ListItems"] = new List<string>
+        {
+            "Paris",
+            "New York",
+            "New Mumbai",
+            "Rome"
         };
         return View();
     }
@@ -46,14 +58,15 @@ public class HomeController : Controller
     [Route("/programming-languages")]
     public IActionResult ProgrammingLanguages()
     {
-        ListModel listModel = new ListModel()
+        var listModel = new ListModel
         {
             ListTitle = "Programming Languages List",
-            ListItems = new List<string>() {
+            ListItems = new List<string>
+            {
                 "Python",
                 "C#",
                 "Go"
-        }
+            }
         };
 
         return PartialView("_ListPartialView", listModel);
@@ -62,14 +75,14 @@ public class HomeController : Controller
     [Route("/friends-list")]
     public IActionResult LoadFriendsList()
     {
-        PersonGridModel personGridModel = new PersonGridModel()
+        var personGridModel = new PersonGridModel
         {
             GridTitle = "Friends",
-            Persons = new List<Person>()
+            Persons = new List<Person>
             {
-                new Person() { PersonName = "Mia", JobTitle = "Developer" },
-                new Person() { PersonName = "Emma", JobTitle = "UI Designer" },
-                new Person() { PersonName = "Avva", JobTitle = "QA" }
+                new() { PersonName = "Mia", JobTitle = "Developer" },
+                new() { PersonName = "Emma", JobTitle = "UI Designer" },
+                new() { PersonName = "Avva", JobTitle = "QA" }
             }
         };
 

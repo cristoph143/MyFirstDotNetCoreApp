@@ -2,11 +2,12 @@
 
 public class CitiesService
 {
-    private List<string> _cities;
+    private readonly List<string> _cities1;
 
     public CitiesService()
     {
-        _cities = new List<string>() { 
+        _cities1 = new List<string>
+        {
             "London",
             "Paris",
             "New York",
@@ -17,6 +18,6 @@ public class CitiesService
 
     public List<string> GetCities()
     {
-        return _cities;
+        return _cities1;
     }
 }
