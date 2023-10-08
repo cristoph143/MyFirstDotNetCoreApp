@@ -5,10 +5,9 @@ using ServiceContracts;
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
-public class HomeController : Controller
+public class HomeController(ICitiesService citiesService) : Controller
 {
     // private readonly CitiesService _citiesService;
-    private readonly ICitiesService _citiesService = null;//new CitiesService();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -19,7 +18,7 @@ public class HomeController : Controller
     [Route("/get-cities")]
     public IActionResult GetCities()
     {
-        List<string> cities1 = _citiesService.GetCities();
+        List<string> cities1 = citiesService.GetCities();
         return View(cities1);
     }
 
