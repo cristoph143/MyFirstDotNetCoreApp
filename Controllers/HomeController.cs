@@ -1,20 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFirstDotNetCoreApp.Models;
-using Services;
+using ServiceContracts;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
 public class HomeController : Controller
 {
-    private readonly CitiesService _citiesService;
-    public HomeController(ILogger<HomeController> logger)
-    {
-        Logger1 = logger;
-        _citiesService = new CitiesService();
-    }
-
-    public ILogger<HomeController> Logger1 { get; }
+    // private readonly CitiesService _citiesService;
+    private readonly ICitiesService _citiesService = null;//new CitiesService();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -25,7 +19,7 @@ public class HomeController : Controller
     [Route("/get-cities")]
     public IActionResult GetCities()
     {
-        var cities1 = _citiesService.GetCities();
+        List<string> cities1 = _citiesService.GetCities();
         return View(cities1);
     }
 

@@ -1,23 +1,19 @@
-﻿namespace Services;
+﻿using ServiceContracts;
 
-public class CitiesService
+namespace Services;
+
+public class CitiesService : ICitiesService
 {
-    private readonly List<string> _cities1;
-
-    public CitiesService()
-    {
-        _cities1 = new List<string>
-        {
-            "London",
-            "Paris",
-            "New York",
-            "Tokyo",
-            "Rome"
-        };
-    }
+    private readonly List<string> _cities = new() { 
+        "London",
+        "Paris",
+        "New York",
+        "Tokyo",
+        "Rome"
+    };
 
     public List<string> GetCities()
     {
-        return _cities1;
+        return _cities;
     }
 }
