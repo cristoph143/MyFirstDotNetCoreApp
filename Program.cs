@@ -18,7 +18,8 @@ internal abstract class Program
         builder.Services.Add(new ServiceDescriptor(
             typeof(ICitiesService),
             typeof(CitiesService),
-            ServiceLifetime.Transient
+            // ServiceLifetime.Transient
+            ServiceLifetime.Singleton
         ));
         var app = builder.Build();
         app.UseStaticFiles();
