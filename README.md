@@ -1,16 +1,16 @@
-
 Assignment instructions
 
 20 minutes to complete
 
 37 student solutions
 
-In this assignment exercise, you will redevelop the previous assignment (Weather App) with Services and Dependency Injection.
+In this assignment exercise, you will redevelop the previous assignment (Weather App) with Services and Dependency
+Injection.
 
 **Requirement: **
 
 Imagine
- a weather application that shows weather details of the selected city.
+a weather application that shows weather details of the selected city.
 Create an Asp.Net Core Web Application that fulfils this requirement.
 
 Consider the following hard-coded weather data of 3 cities.
@@ -24,7 +24,7 @@ Consider a model class called 'CityWeather' with following properties:
 **Example #1:**
 
 If
- you receive a HTTP GET request at path "/", it has to generate a view
+you receive a HTTP GET request at path "/", it has to generate a view
 with weather details of all cities with HTTP status code 200.
 
 Request Url: /
@@ -42,8 +42,8 @@ View as shown below.
 **Example #2:**
 
 If
- you receive a HTTP GET request at path "/weather/{cityCode}", it has to
- generate a view with weather details of the selected city s with HTTP
+you receive a HTTP GET request at path "/weather/{cityCode}", it has to
+generate a view with weather details of the selected city s with HTTP
 status code 200.
 
 Request Url: /

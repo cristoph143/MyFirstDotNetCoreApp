@@ -1,44 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
-using MyFirstDotNetCoreApp.Models;
+using ServiceContracts;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
-public class WeatherController : Controller
+[Route("[controller]")]
+public class WeatherController(IWeatherService weatherService) : Controller
 {
-    public ILogger<WeatherController> Logger1 { get; }
-
-    public WeatherController(ILogger<WeatherController> logger)
-    {
-        Logger1 = logger;
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View("Error!");
-    }
-    //initialize hard-coded data as instructed in the requirement
-    private readonly List<CityWeather> _cities = new() {
-        new CityWeather { CityUniqueCode = "LDN", CityName = "London", DateAndTime = Convert.ToDateTime("2030-01-01 8:00"), TemperatureFahrenheit = 33 },
-        new CityWeather { CityUniqueCode = "NYC", CityName = "New York", DateAndTime = Convert.ToDateTime("2030-01-01 3:00"), TemperatureFahrenheit = 60 },
-        new CityWeather { CityUniqueCode = "PAR", CityName = "Paris", DateAndTime = Convert.ToDateTime("2030-01-01 9:00"), TemperatureFahrenheit = 82 }
-    };
-
     //When a HTTP GET request is received at path "/"
     [Route("/")]
-    public IActionResult Index() =>
+    public IActionResult Index()
+    {
+        //invoke service method
+        var cities = weatherService.GetWeatherDetails();
         //send cities collection to "Views/Weather/Index" view
-        View(_cities);
+        return View(cities);
+    }
 
 
-    [Route("weather/{cityCode?}")]
+    [Route("/weather/{cityCode?}")]
     public IActionResult City(string? cityCode)
     {
+        //if cityCode is not supplied in the route parameter
         if (string.IsNullOrEmpty(cityCode))
             //send null as model object to "Views/Weather/Index" view
             return View();
-        //get matching city object based on the city code
-        CityWeather? city = _cities.FirstOrDefault(temp => temp.CityUniqueCode == cityCode);
+        //invoke service method (get matching city object based on the city code)
+        var city = weatherService.GetWeatherByCityCode(cityCode);
+        //send matching city object to "Views/Weather/Index" view
         return View(city);
     }
 }

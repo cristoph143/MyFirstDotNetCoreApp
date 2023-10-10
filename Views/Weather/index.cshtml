@@ -5,10 +5,10 @@
 
 <div class="margin-top-200 margin-left">
     <div class="flex">
-        @foreach (CityWeather city in Model)
+        @foreach (var city in Model)
         {
-            <partial name="_CityPartial" model="city" />
-            @await Component.InvokeAsync("City", new { city = city })
+            <partial name="_CityPartial" model="city"/>
+            @await Component.InvokeAsync("City", new { city })
         }
 
     </div>

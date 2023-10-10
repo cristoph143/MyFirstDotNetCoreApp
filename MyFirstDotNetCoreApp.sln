@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFirstDotNetCoreApp", "MyFirstDotNetCoreApp.csproj", "{32A8FFD4-CC3E-460A-B1CE-455E1CF88770}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceContracts", "ServiceContracts\ServiceContracts.csproj", "{BD9AE8E7-68E8-4DC1-8473-28B44EB77888}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{FB4AA36B-4EC9-426D-AC2F-AB8156BD8094}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{32A8FFD4-CC3E-460A-B1CE-455E1CF88770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32A8FFD4-CC3E-460A-B1CE-455E1CF88770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32A8FFD4-CC3E-460A-B1CE-455E1CF88770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD9AE8E7-68E8-4DC1-8473-28B44EB77888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD9AE8E7-68E8-4DC1-8473-28B44EB77888}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD9AE8E7-68E8-4DC1-8473-28B44EB77888}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD9AE8E7-68E8-4DC1-8473-28B44EB77888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4AA36B-4EC9-426D-AC2F-AB8156BD8094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4AA36B-4EC9-426D-AC2F-AB8156BD8094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4AA36B-4EC9-426D-AC2F-AB8156BD8094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4AA36B-4EC9-426D-AC2F-AB8156BD8094}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
