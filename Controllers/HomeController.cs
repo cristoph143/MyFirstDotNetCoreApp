@@ -9,7 +9,8 @@ public class HomeController(
     ICitiesService citiesService,
     ICitiesService _citiesService1,
     ICitiesService _citiesService2,
-    ICitiesService _citiesService3
+    ICitiesService _citiesService3,
+    IServiceScopeFactory _serviceScopeFactory
     ) : Controller
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -65,6 +66,23 @@ public class HomeController(
         ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        return View(cities);
+    }
+
+    [Route("/from-serviceScope")]
+    public IActionResult ServiceScope()
+    {
+        List<string> cities = _citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+        {
+            //Inject CitiesService
+            ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
+            //DB work
+            ViewBag.InstanceId_CitiesServicece_InScope = citiesService.ServiceInstanceId;
+        } //end of scope; it calls CitiesService.Dispose()
         return View(cities);
     }
 
