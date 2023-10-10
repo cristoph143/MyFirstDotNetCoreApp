@@ -5,10 +5,13 @@ using ServiceContracts;
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
-public class HomeController(ICitiesService citiesService) : Controller
+public class HomeController(
+    ICitiesService citiesService,
+    ICitiesService _citiesService1,
+    ICitiesService _citiesService2,
+    ICitiesService _citiesService3
+    ) : Controller
 {
-    // private readonly CitiesService _citiesService;
-
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
@@ -49,10 +52,20 @@ public class HomeController(ICitiesService citiesService) : Controller
     }
 
     [Route("/from-services")]
-    public IActionResult FromServices([FromServices]ICitiesService _citiesService)
+    public IActionResult FromServices([FromServices] ICitiesService _citiesService)
     {
-      List<string> cities = _citiesService.GetCities();
-      return View(cities);
+        List<string> cities = _citiesService.GetCities();
+        return View(cities);
+    }
+
+    [Route("/from-singleton")]
+    public IActionResult Singleton()
+    {
+        List<string> cities = _citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        return View(cities);
     }
 
     [Route("/programming-languages")]

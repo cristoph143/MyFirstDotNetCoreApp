@@ -19,7 +19,8 @@ internal abstract class Program
             typeof(ICitiesService),
             typeof(CitiesService),
             // ServiceLifetime.Transient
-            ServiceLifetime.Singleton
+            // ServiceLifetime.Singleton
+            ServiceLifetime.Scoped
         ));
         var app = builder.Build();
         app.UseStaticFiles();
