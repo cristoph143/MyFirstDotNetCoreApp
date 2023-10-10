@@ -35,6 +35,10 @@ internal abstract class Program
         });
 
         var app = builder.Build();
+        if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsEnvironment("Beta"))
+        {
+            app.UseDeveloperExceptionPage();
+        }
         app.UseStaticFiles();
         app.UseRouting();
         app.MapControllers();
