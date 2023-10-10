@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
@@ -7,10 +8,11 @@ namespace MyFirstDotNetCoreApp.Controllers;
 [Route("[controller]")]
 public class HomeController(
     ICitiesService citiesService,
-    ICitiesService _citiesService1,
-    ICitiesService _citiesService2,
-    ICitiesService _citiesService3,
-    IServiceScopeFactory _serviceScopeFactory
+    ICitiesService citiesService1,
+    ICitiesService citiesService2,
+    ICitiesService citiesService3,
+    IServiceScopeFactory _serviceScopeFactory,
+    ILifetimeScope _lifeTimeScope
     ) : Controller
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -62,20 +64,20 @@ public class HomeController(
     [Route("/from-singleton")]
     public IActionResult Singleton()
     {
-        List<string> cities = _citiesService1.GetCities();
-        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        List<string> cities = citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
         return View(cities);
     }
 
     [Route("/from-serviceScope")]
     public IActionResult ServiceScope()
     {
-        List<string> cities = _citiesService1.GetCities();
-        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        List<string> cities = citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
         using (IServiceScope scope = _serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
@@ -89,10 +91,10 @@ public class HomeController(
     [Route("/view-injection")]
     public IActionResult ViewInjection()
     {
-        List<string> cities = _citiesService1.GetCities();
-        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
-        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        List<string> cities = citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
         using (IServiceScope scope = _serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
@@ -100,6 +102,28 @@ public class HomeController(
             //DB work
             ViewBag.InstanceId_CitiesService_InScope = citiesService.ServiceInstanceId;
         } //end of scope; it calls CitiesService.Dispose()
+        return View(cities);
+    }
+
+    [Route("/autoFac")]
+    public IActionResult AutoFac()
+    {
+        List<string> cities = citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
+
+        ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
+
+        ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
+
+        using (ILifetimeScope scope = _lifeTimeScope.BeginLifetimeScope())
+        {
+            //Inject CitiesService
+            ICitiesService citiesService = scope.Resolve<ICitiesService>();
+            //DB work
+
+            ViewBag.InstanceId_CitiesService_InScope = citiesService.ServiceInstanceId;
+        } //end of scope; it calls CitiesService.Dispose()
+
         return View(cities);
     }
 
