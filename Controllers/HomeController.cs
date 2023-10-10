@@ -48,6 +48,13 @@ public class HomeController(ICitiesService citiesService) : Controller
         return View();
     }
 
+    [Route("/from-services")]
+    public IActionResult FromServices([FromServices]ICitiesService _citiesService)
+    {
+      List<string> cities = _citiesService.GetCities();
+      return View(cities);
+    }
+
     [Route("/programming-languages")]
     public IActionResult ProgrammingLanguages()
     {
