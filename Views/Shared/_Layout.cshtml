@@ -1,5 +1,58 @@
 @{
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}      
+
+@functions {
+    public List<string> GetUrls()
+    {
+        // Define and return the list of URLs
+        return new List<string>
+        {
+            "/",
+            "/about-company",
+            "/get-cities",
+            "/from-services",
+            "/from-singleton",
+            "/from-serviceScope",
+            "/view-injection",
+            "/contact-support",
+            "/products",
+            "/search-products",
+            "/order-product"
+        };
+    }
+
+    public string GetLinkText(string url)
+    {
+        // Define and return the link text based on the URL
+        switch (url)
+        {
+            case "/":
+                return "Home";
+            case "/about-company":
+                return "About";
+            case "/get-cities":
+                return "Cities";
+            case "/from-services":
+                return "Cities Service";
+            case "/from-singleton":
+                return "Singleton";
+            case "/from-serviceScope":
+                return "Service Scope";
+            case "/view-injection":
+                return "View Injection";
+            case "/contact-support":
+                return "Contact";
+            case "/products":
+                return "All Products";
+            case "/search-products":
+                return "Search Products";
+            case "/order-product":
+                return "Order Product";
+            default:
+                return string.Empty;
+        }
+    }
 }
 <!DOCTYPE html>
 
@@ -14,36 +67,12 @@
     <div class="navbar">
         <div class="navbar-brand">AspNet Core App</div>
         <ul>
-            <li>
-                <a href="/">Home</a>
-            </li>
-            <li>
-                <a href="/about-company">About</a>
-            </li>
-            <li>
-                <a href="/get-cities">Cities</a>
-            </li>
-            <li>
-                <a href="/from-services">Cities Service</a>
-            </li>
-            <li>
-                <a href="/from-singleton">Singleton</a>
-            </li>
-            <li>
-                <a href="/from-serviceScope">Service Scope</a>
-            </li>
-            <li>
-                <a href="/contact-support">Contact</a>
-            </li>
-            <li>
-                <a href="/products">All Products</a>
-            </li>
-            <li>
-                <a href="/search-products">Search Products</a>
-            </li>
-            <li>
-                <a href="/order-product">Order Product</a>
-            </li>
+            @foreach (var url in GetUrls())
+            {
+                <li>
+                    <a href="@url">@GetLinkText(url)</a>
+                </li>
+            }
         </ul>
     </div>
 

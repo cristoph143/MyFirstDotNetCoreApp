@@ -86,6 +86,23 @@ public class HomeController(
         return View(cities);
     }
 
+    [Route("/view-injection")]
+    public IActionResult ViewInjection()
+    {
+        List<string> cities = _citiesService1.GetCities();
+        ViewBag.InstanceId_CitiesService_1 = _citiesService1.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_2 = _citiesService2.ServiceInstanceId;
+        ViewBag.InstanceId_CitiesService_3 = _citiesService3.ServiceInstanceId;
+        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+        {
+            //Inject CitiesService
+            ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
+            //DB work
+            ViewBag.InstanceId_CitiesService_InScope = citiesService.ServiceInstanceId;
+        } //end of scope; it calls CitiesService.Dispose()
+        return View(cities);
+    }
+
     [Route("/programming-languages")]
     public IActionResult ProgrammingLanguages()
     {
