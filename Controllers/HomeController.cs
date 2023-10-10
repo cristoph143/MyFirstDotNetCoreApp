@@ -12,7 +12,8 @@ public class HomeController(
     ICitiesService citiesService2,
     ICitiesService citiesService3,
     IServiceScopeFactory _serviceScopeFactory,
-    ILifetimeScope _lifeTimeScope
+    ILifetimeScope _lifeTimeScope,
+    IWebHostEnvironment _webHostEnvironment
     ) : Controller
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -31,6 +32,7 @@ public class HomeController(
     [Route("/")]
     public IActionResult Index()
     {
+              ViewBag.CurrentEnviornment = _webHostEnvironment.EnvironmentName;
         ViewData["ListTitle"] = "Cities";
         ViewData["ListItems"] = new List<string>
         {

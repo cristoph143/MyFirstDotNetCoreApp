@@ -35,7 +35,7 @@ internal abstract class Program
         });
 
         var app = builder.Build();
-        if (app.Environment.IsDevelopment() || app.Environment.IsStaging() || app.Environment.IsEnvironment("Beta"))
+        if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
