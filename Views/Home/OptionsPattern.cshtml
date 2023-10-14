@@ -1,14 +1,13 @@
 ﻿@model dynamic
-
 @{
-    ViewBag.Title = "Hierarchical Configuration";
+    ViewBag.Title = "Options Pattern";
     Layout = "_Layout";
-}
+}           
 
 @{
     var partialViewData = new ViewDataDictionary(ViewData);
     partialViewData.Remove("Title");
-    partialViewData.Add("Title", "Hierarchical Configuration");
+    partialViewData.Add("Title", "Options Pattern");
 }
 
 @await Html.PartialAsync("_ConfigurationPartial", partialViewData)

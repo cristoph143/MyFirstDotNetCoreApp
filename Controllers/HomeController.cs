@@ -2,7 +2,6 @@ using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
-
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
@@ -107,6 +106,19 @@ public class HomeController(
       IConfigurationSection wetherapiSection = _configuration.GetSection("weatherapi");
       ViewBag.ClientID = wetherapiSection["ClientID"];
       ViewBag.ClientSecret = wetherapiSection["ClientSecret"];
+      return View();
+    }
+
+    [Route("/options-pattern")]
+    public IActionResult OptionsPattern()
+    {
+      //Bind: Loads configuration values into a new Options object
+      //WeatherApiOptions options = _configuration.GetSection("weatherapi").Get<WeatherApiOptions>();
+      //Bind: Loads configuration values into existing Options object
+      WeatherApiOptions options = new WeatherApiOptions();
+      _configuration.GetSection("weatherApi").Bind(options);
+      ViewBag.ClientID = options.ClientId;
+      ViewBag.ClientSecret = options.ClientSecret;
       return View();
     }
 
