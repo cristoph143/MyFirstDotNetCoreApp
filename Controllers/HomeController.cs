@@ -12,6 +12,7 @@ public class HomeController(
     ICitiesService citiesService2,
     ICitiesService citiesService3,
     IServiceScopeFactory _serviceScopeFactory,
+    IConfiguration _configuration,
     ILifetimeScope _lifeTimeScope,
     IWebHostEnvironment _webHostEnvironment
     ) : Controller
@@ -32,7 +33,7 @@ public class HomeController(
     [Route("/")]
     public IActionResult Index()
     {
-              ViewBag.CurrentEnviornment = _webHostEnvironment.EnvironmentName;
+        ViewBag.CurrentEnviornment = _webHostEnvironment.EnvironmentName;
         ViewData["ListTitle"] = "Cities";
         ViewData["ListItems"] = new List<string>
         {
@@ -53,6 +54,14 @@ public class HomeController(
     [Route("/contact-support")]
     public IActionResult Contact()
     {
+        return View();
+    }
+
+    [Route("/i-configuration")]
+    public IActionResult Iconfiguration()
+    {
+        ViewBag.MyKey = _configuration["MyKey"];
+        ViewBag.MyAPIKey = _configuration.GetValue("MyAPIKey", "the default key");
         return View();
     }
 

@@ -3,7 +3,8 @@
 }      
 
 @functions {
-    public List<string> GetUrls()
+
+    private static List<string> GetUrls()
     {
         // Define and return the list of URLs
         return new List<string>
@@ -20,41 +21,32 @@
             "/products",
             "/search-products",
             "/order-product",
+            "/app-setting",
+            "/i-configuration"
         };
     }
 
-    public string GetLinkText(string url)
+    private static string GetLinkText(string url)
     {
-        // Define and return the link text based on the URL
-        switch (url)
+    // Define and return the link text based on the URL
+        return url switch
         {
-            case "/":
-                return "Home";
-            case "/about-company":
-                return "About";
-            case "/get-cities":
-                return "Cities";
-            case "/from-services":
-                return "Cities Service";
-            case "/from-singleton":
-                return "Singleton";
-            case "/from-serviceScope":
-                return "Service Scope";
-            case "/view-injection":
-                return "View Injection";
-            case "/contact-support":
-                return "Contact";
-            case "/autoFac":
-                return "AutoFac";
-            case "/products":
-                return "All Products";
-            case "/search-products":
-                return "Search Products";
-            case "/order-product":
-                return "Order Product";
-            default:
-                return string.Empty;
-        }
+            "/" => "Home",
+            "/about-company" => "About",
+            "/get-cities" => "Cities",
+            "/from-services" => "Cities Service",
+            "/from-singleton" => "Singleton",
+            "/from-serviceScope" => "Service Scope",
+            "/view-injection" => "View Injection",
+            "/contact-support" => "Contact",
+            "/autoFac" => "AutoFac",
+            "/products" => "All Products",
+            "/search-products" => "Search Products",
+            "/order-product" => "Order Product",
+            "/app-setting" => "App Setting",
+            "/i-configuration" => "IConfiguration",
+            _ => string.Empty
+            };
     }
 }
 <!DOCTYPE html>
@@ -84,7 +76,7 @@
     </div>
 
     <div class="footer-content">
-        @RenderSection("footer_section", false)
+        @await RenderSectionAsync("footer_section", false)
     </div>
 </div>
 
