@@ -99,6 +99,17 @@ public class HomeController(
         return View(cities);
     }
 
+    [Route("/hierarchical-configuration")]
+    public IActionResult HierarchicalConfiguration()
+    {
+      //ViewBag.ClientID = _configuration["weatherapi:ClientID"];
+      //ViewBag.ClientSecret = _configuration.GetValue("weatherapi:ClientSecret", "the default client secret");
+      IConfigurationSection wetherapiSection = _configuration.GetSection("weatherapi");
+      ViewBag.ClientID = wetherapiSection["ClientID"];
+      ViewBag.ClientSecret = wetherapiSection["ClientSecret"];
+      return View();
+    }
+
     [Route("/view-injection")]
     public IActionResult ViewInjection()
     {

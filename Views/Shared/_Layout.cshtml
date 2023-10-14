@@ -4,51 +4,38 @@
 
 @functions {
 
+    private static readonly Dictionary<string, string> UrlLinkTextMap = new Dictionary<string, string>
+    {
+        { "/", "Home" },
+        { "/about-company", "About" },
+        { "/get-cities", "Cities" },
+        { "/from-services", "Cities Service" },
+        { "/from-singleton", "Singleton" },
+        { "/from-serviceScope", "Service Scope" },
+        { "/view-injection", "View Injection" },
+        { "/contact-support", "Contact" },
+        { "/autoFac", "AutoFac" },
+        { "/products", "All Products" },
+        { "/search-products", "Search Products" },
+        { "/order-product", "Order Product" },
+        { "/app-setting", "App Setting" },
+        { "/i-configuration", "IConfiguration" },
+        { "/hierarchical-configuration", "HierarchicalConfiguration" }
+    };
+
     private static List<string> GetUrls()
     {
-        // Define and return the list of URLs
-        return new List<string>
-        {
-            "/",
-            "/about-company",
-            "/get-cities",
-            "/from-services",
-            "/from-singleton",
-            "/from-serviceScope",
-            "/view-injection",
-            "/contact-support",
-            "/autoFac",
-            "/products",
-            "/search-products",
-            "/order-product",
-            "/app-setting",
-            "/i-configuration"
-        };
+    // Define and return the list of URLs
+        return UrlLinkTextMap.Keys.ToList();
     }
 
     private static string GetLinkText(string url)
     {
     // Define and return the link text based on the URL
-        return url switch
-        {
-            "/" => "Home",
-            "/about-company" => "About",
-            "/get-cities" => "Cities",
-            "/from-services" => "Cities Service",
-            "/from-singleton" => "Singleton",
-            "/from-serviceScope" => "Service Scope",
-            "/view-injection" => "View Injection",
-            "/contact-support" => "Contact",
-            "/autoFac" => "AutoFac",
-            "/products" => "All Products",
-            "/search-products" => "Search Products",
-            "/order-product" => "Order Product",
-            "/app-setting" => "App Setting",
-            "/i-configuration" => "IConfiguration",
-            _ => string.Empty
-            };
+        return UrlLinkTextMap.TryGetValue(url, out var linkText) ? linkText : string.Empty;
     }
 }
+
 <!DOCTYPE html>
 
 <html>
