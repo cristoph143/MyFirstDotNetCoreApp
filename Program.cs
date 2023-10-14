@@ -41,6 +41,15 @@ internal abstract class Program
         }
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.Map("/app-setting", async context =>
+            {
+                await context.Response.WriteAsync(app.Configuration["mykEY"] + "\n");
+                await context.Response.WriteAsync(app.Configuration.GetValue<string>("MyKey") + "\n");
+                await context.Response.WriteAsync(app.Configuration.GetValue<int>("x", 10) + "\n");
+            });
+        });
         app.MapControllers();
 
         app.Run();
