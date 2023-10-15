@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
 using Services;
 
@@ -17,6 +18,9 @@ internal abstract class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
         builder.Services.AddControllersWithViews();
+
+        //Supply an object of WeatherApiOptions (with 'weatherapi' section) as a service
+        builder.Services.Configure<WeatherApiOptions>(builder.Configuration.GetSection("weatherApi"));
         // builder.Services.Add(new ServiceDescriptor(
         //     typeof(ICitiesService),
         //     typeof(CitiesService),

@@ -1,0 +1,8 @@
+﻿@model dynamic
+
+@{
+    var partialViewData = new ViewDataDictionary(ViewData);
+    partialViewData.Add("Title", "Config As A Service");
+}
+
+@await Html.PartialAsync("_ConfigurationPartial", partialViewData)

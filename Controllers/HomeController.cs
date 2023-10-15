@@ -1,5 +1,6 @@
 using Autofac;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
 namespace MyFirstDotNetCoreApp.Controllers;
@@ -10,12 +11,15 @@ public class HomeController(
     ICitiesService citiesService1,
     ICitiesService citiesService2,
     ICitiesService citiesService3,
-    IServiceScopeFactory _serviceScopeFactory,
-    IConfiguration _configuration,
-    ILifetimeScope _lifeTimeScope,
-    IWebHostEnvironment _webHostEnvironment
+    IServiceScopeFactory serviceScopeFactory,
+    IConfiguration configuration,
+    ILifetimeScope lifeTimeScope,
+    IWebHostEnvironment webHostEnvironment,
+    IOptions<WeatherApiOptions> weatherApiOptions
     ) : Controller
 {
+    private readonly WeatherApiOptions _options = weatherApiOptions.Value;
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
@@ -32,7 +36,7 @@ public class HomeController(
     [Route("/")]
     public IActionResult Index()
     {
-        ViewBag.CurrentEnviornment = _webHostEnvironment.EnvironmentName;
+        ViewBag.CurrentEnviornment = webHostEnvironment.EnvironmentName;
         ViewData["ListTitle"] = "Cities";
         ViewData["ListItems"] = new List<string>
         {
@@ -57,10 +61,10 @@ public class HomeController(
     }
 
     [Route("/i-configuration")]
-    public IActionResult Iconfiguration()
+    public IActionResult IConfiguration()
     {
-        ViewBag.MyKey = _configuration["MyKey"];
-        ViewBag.MyAPIKey = _configuration.GetValue("MyAPIKey", "the default key");
+        ViewBag.MyKey = configuration["MyKey"];
+        ViewBag.MyAPIKey = configuration.GetValue("MyAPIKey", "the default key");
         return View();
     }
 
@@ -88,7 +92,7 @@ public class HomeController(
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
-        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+        using (IServiceScope scope = serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
             ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
@@ -101,25 +105,25 @@ public class HomeController(
     [Route("/hierarchical-configuration")]
     public IActionResult HierarchicalConfiguration()
     {
-      //ViewBag.ClientID = _configuration["weatherapi:ClientID"];
-      //ViewBag.ClientSecret = _configuration.GetValue("weatherapi:ClientSecret", "the default client secret");
-      IConfigurationSection wetherapiSection = _configuration.GetSection("weatherapi");
-      ViewBag.ClientID = wetherapiSection["ClientID"];
-      ViewBag.ClientSecret = wetherapiSection["ClientSecret"];
-      return View();
+        //ViewBag.ClientID = _configuration["weatherapi:ClientID"];
+        //ViewBag.ClientSecret = _configuration.GetValue("weatherapi:ClientSecret", "the default client secret");
+        IConfigurationSection wetherapiSection = configuration.GetSection("weatherapi");
+        ViewBag.ClientID = wetherapiSection["ClientID"];
+        ViewBag.ClientSecret = wetherapiSection["ClientSecret"];
+        return View();
     }
 
     [Route("/options-pattern")]
     public IActionResult OptionsPattern()
     {
-      //Bind: Loads configuration values into a new Options object
-      //WeatherApiOptions options = _configuration.GetSection("weatherapi").Get<WeatherApiOptions>();
-      //Bind: Loads configuration values into existing Options object
-      WeatherApiOptions options = new WeatherApiOptions();
-      _configuration.GetSection("weatherApi").Bind(options);
-      ViewBag.ClientID = options.ClientId;
-      ViewBag.ClientSecret = options.ClientSecret;
-      return View();
+        //Bind: Loads configuration values into a new Options object
+        //WeatherApiOptions options = _configuration.GetSection("weatherapi").Get<WeatherApiOptions>();
+        //Bind: Loads configuration values into existing Options object
+        WeatherApiOptions options = new WeatherApiOptions();
+        configuration.GetSection("weatherApi").Bind(options);
+        ViewBag.ClientID = options.ClientID;
+        ViewBag.ClientSecret = options.ClientSecret;
+        return View();
     }
 
     [Route("/view-injection")]
@@ -129,7 +133,7 @@ public class HomeController(
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
-        using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+        using (IServiceScope scope = serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
             ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
@@ -149,7 +153,7 @@ public class HomeController(
 
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
 
-        using (ILifetimeScope scope = _lifeTimeScope.BeginLifetimeScope())
+        using (ILifetimeScope scope = lifeTimeScope.BeginLifetimeScope())
         {
             //Inject CitiesService
             ICitiesService citiesService = scope.Resolve<ICitiesService>();
@@ -193,5 +197,14 @@ public class HomeController(
         };
 
         return ViewComponent("Grid", new { grid = personGridModel });
+    }
+
+    [Route("/config-service")]
+    public IActionResult ConfigService()
+    {
+        ViewBag.ClientID = _options.ClientID;
+        ViewBag.ClientSecret = _options.ClientSecret;
+
+        return View();
     }
 }
