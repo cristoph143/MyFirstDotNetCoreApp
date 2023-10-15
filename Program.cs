@@ -21,6 +21,13 @@ internal abstract class Program
 
         //Supply an object of WeatherApiOptions (with 'weatherapi' section) as a service
         builder.Services.Configure<WeatherApiOptions>(builder.Configuration.GetSection("weatherApi"));
+        //Load MyOwnConfig.json
+        // builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+        // {
+        //     config.AddJsonFile("MyOwnConfig.json", optional: true, reloadOnChange: true);
+        // });
+        //Load MyOwnConfig.json
+        builder.Configuration.AddJsonFile("MyOwnConfig.json", optional: true, reloadOnChange: true);
         // builder.Services.Add(new ServiceDescriptor(
         //     typeof(ICitiesService),
         //     typeof(CitiesService),
