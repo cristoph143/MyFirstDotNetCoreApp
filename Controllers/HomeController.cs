@@ -10,11 +10,6 @@ public class HomeController(
 {
     private readonly SocialMediaLinksOptions _socialMediaLinksOptions = socialMediaLinksOptions.Value;
 
-    // public HomeController(IOptions<SocialMediaLinksOptions> socialMediaLinksOptions)
-    // {
-    //     _socialMediaLinksOptions = socialMediaLinksOptions.Value;
-    // }
-
     [Route("/")]
     public IActionResult Index()
     {
