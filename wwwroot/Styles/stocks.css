@@ -7,8 +7,8 @@
 
 *
 {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -52,7 +52,7 @@
     cursor: pointer;
     transition: background-color 0.4s;
     display: inline-block;
-    margin: 0px 3px;
+    margin: 0 3px;
     color: #0e5eba;
     text-decoration: none;
 }
@@ -95,8 +95,8 @@
     border-collapse: collapse;
     border: 1px solid #ffffff;
     padding: 5px;
-    box-shadow: 0px 0px 4px 2px #e4e4e4;
-    margin: 10px 0px;
+    box-shadow: 0 0 4px 2px #e4e4e4;
+    margin: 10px 0;
     margin: auto;
 }
 
@@ -356,7 +356,7 @@
     padding: 15px;
     border-radius: 8px;
     border: 2px solid #d3d1d1;
-    box-shadow: 0px 0px 3px 2px #ffffff;
+    box-shadow: 0 0 3px 2px #ffffff;
 }
 
 .flex-direction-vertical
@@ -500,7 +500,7 @@ a.link-hover:hover
 {
     outline: none;
     border: 1px solid #245eb0;
-    box-shadow: 0px 0px 4px 0px #1383a4;
+    box-shadow: 0 0 4px 0 #1383a4;
 }
 
 .form-label
