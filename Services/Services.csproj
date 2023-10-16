@@ -4,10 +4,18 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
+        <UserSecretsId>5ab452f1-5c38-412a-ac67-7580681e995d</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ServiceContracts\ServiceContracts.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.2.23479.6" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.2.23479.6" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0-rc.2.23479.6" />
     </ItemGroup>
 
 </Project>

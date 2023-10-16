@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
 using Services;
+using StocksApp.Services;
 
 namespace MyFirstDotNetCoreApp;
 
@@ -45,6 +46,23 @@ internal abstract class Program
             //containerBuilder.RegisterType<CitiesService>().As<ICitiesService>().SingleInstance(); //AddSingleton
         });
 
+        builder.Services.AddHttpClient();
+        builder.Services.AddScoped<FinnhubService>();
+        // Build the Autofac container
+        builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        {
+            // Retrieve the secret
+            var configuration = builder.Configuration;
+            string finnhubToken = configuration["FinnhubToken"];
+
+            // Register FinnhubService with the secret
+            containerBuilder.RegisterType<FinnhubService>()
+                .WithParameter(new TypedParameter(typeof(string), finnhubToken))
+                .As<IFinnhubService>();
+        });
+
+        builder.Services.Configure<TradingOptions>(
+            builder.Configuration.GetSection(nameof(TradingOptions))); //add IOptions<TradingOptions> as a service
         var app = builder.Build();
         if (app.Environment.IsDevelopment())
         {
@@ -52,15 +70,20 @@ internal abstract class Program
         }
         app.UseStaticFiles();
         app.UseRouting();
-        app.UseEndpoints(endpoints =>
+        // app.UseEndpoints(endpoints =>
+        // {
+        //     endpoints.Map("/app-setting", async context =>
+        //     {
+        //         await context.Response.WriteAsync(app.Configuration["mykEY"] + "\n");
+        //         await context.Response.WriteAsync(app.Configuration.GetValue<string>("MyKey") + "\n");
+        //         await context.Response.WriteAsync(app.Configuration.GetValue<int>("x", 10) + "\n");
+        //     });
+        // });
+        app.MapGet("/app-setting", async context =>
         {
-            endpoints.Map("/app-setting", async context =>
-            {
-                await context.Response.WriteAsync(app.Configuration["mykEY"] + "\n");
-                await context.Response.WriteAsync(app.Configuration.GetValue<string>("MyKey") + "\n");
-                await context.Response.WriteAsync(app.Configuration.GetValue<int>("x", 10) + "\n");
-            });
-        });
+            await context.Response.WriteAsync(app.Configuration["mykEY"] + "\n");
+            await context.Response.WriteAsync(app.Configuration.GetValue<string>("MyKey") + "\n");
+            await context.Response.WriteAsync(app.Configuration.GetValue("x", 10) + "\n");        });
         app.MapControllers();
 
         app.Run();

@@ -4,22 +4,17 @@ namespace Services;
 
 public class CitiesService : ICitiesService, IDisposable
 {
-    private List<string> _cities;
-
-    public Guid ServiceInstanceId { get; }
-
-    public CitiesService()
-    {
-        ServiceInstanceId = Guid.NewGuid();
-        _cities = new List<string>() {
+    private readonly List<string> _cities = new() {
         "London",
         "Paris",
         "New York",
         "Tokyo",
         "Rome"
-      };
-        //TO DO: Add logic to open the db connection
-    }
+    };
+
+    public Guid ServiceInstanceId { get; } = Guid.NewGuid();
+
+    //TO DO: Add logic to open the db connection
 
     public List<string> GetCities()
     {
