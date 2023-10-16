@@ -5,14 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
-
-
-    <ItemGroup>
-      <Folder Include="Controllers\" />
-      <Folder Include="Models\" />
-      <Folder Include="wwwroot\" />
-    </ItemGroup>
 
 
     <ItemGroup>
@@ -190,6 +184,19 @@
       <_ContentIncludedByDefault Remove="ServiceContracts\obj\project.assets.json" />
       <_ContentIncludedByDefault Remove="ServiceContracts\obj\project.packagespec.json" />
       <_ContentIncludedByDefault Remove="ServiceContracts\obj\ServiceContracts.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Services\bin\Debug\net7.0\Services.deps.json" />
+      <_ContentIncludedByDefault Remove="Services\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Services\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="Services\obj\Services.csproj.nuget.dgspec.json" />
+    </ItemGroup>
+
+
+
+
+
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Home\Index.cshtml" />
     </ItemGroup>
 
 </Project>
