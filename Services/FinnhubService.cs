@@ -10,34 +10,31 @@ public class FinnhubService(
     IConfiguration configuration
 ): IFinnhubService
 {
-    public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
+
+    private async Task<Dictionary<string, object>?> SendHttpRequest(string stockSymbol)
     {
         using HttpClient httpClient = httpClientFactory.CreateClient();
         string token = configuration.GetSection("FinnhubToken").Value;
         HttpRequestMessage httpRequestMessage = new HttpRequestMessage
         {
-            RequestUri = new Uri(
-                $"https://finnhub.io/api/v1/quote?symbol={stockSymbol}&token={token}"
-            ),
+            RequestUri = new Uri($"https://finnhub.io/api/v1/quote?symbol={stockSymbol}&token={token}"),
             Method = HttpMethod.Get
         };
 
-        HttpResponseMessage httpResponseMessage = 
-            await httpClient.SendAsync(httpRequestMessage);
+        HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+        string response = await httpResponseMessage.Content.ReadAsStringAsync();
 
-        Stream stream = await httpResponseMessage.Content.ReadAsStreamAsync();
-
-        StreamReader streamReader = new StreamReader(stream);
-
-        string response = await streamReader.ReadToEndAsync();
-        Dictionary<string, object>? responseDictionary = 
-            JsonSerializer.Deserialize<Dictionary<string, object>>(response);
+        Dictionary<string, object>? responseDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(response);
 
         if (responseDictionary == null)
-            throw new InvalidOperationException("No response from finnhub server");
+            throw new InvalidOperationException("No response from server");
 
         return responseDictionary.TryGetValue("error", out var value)
             ? throw new InvalidOperationException(Convert.ToString(value))
             : responseDictionary;
     }
+
+    public Dictionary<string, object>? GetCompanyProfile(string stockSymbol) => SendHttpRequest(stockSymbol).GetAwaiter().GetResult();
+
+    public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol) => await SendHttpRequest(stockSymbol);
 }
