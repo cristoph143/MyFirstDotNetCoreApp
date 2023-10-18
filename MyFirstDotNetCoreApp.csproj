@@ -6,31 +6,32 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>preview</LangVersion>
-      <UserSecretsId>c7a23106-1d7c-4816-8cd4-9e4d908e5859</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>c7a23106-1d7c-4816-8cd4-9e4d908e5859</UserSecretsId>
+    </PropertyGroup>
 
 
     <ItemGroup>
-        <ProjectReference Include="ServiceContracts\ServiceContracts.csproj" />
-        <ProjectReference Include="Services\Services.csproj" />
+        <ProjectReference Include="ServiceContracts\ServiceContracts.csproj"/>
+        <ProjectReference Include="Services\Services.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.2.23479.6"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+        <PackageReference Include="xunit.assert" Version="2.4.2"/>
+        <PackageReference Include="xunit.extensibility.core" Version="2.5.3"/>
+
+
     </ItemGroup>
 
 
     <ItemGroup>
-      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0-rc.2.23479.6" />
-      <PackageReference Include="xunit.assert" Version="2.4.2" />
-      <PackageReference Include="xunit.extensibility.core" Version="2.5.3" />
-
-
-
-
+        <_ContentIncludedByDefault Remove="CRUDTests\bin\Debug\net7.0\CRUDTests.deps.json"/>
+        <_ContentIncludedByDefault Remove="CRUDTests\bin\Debug\net7.0\CRUDTests.runtimeconfig.json"/>
+        <_ContentIncludedByDefault Remove="CRUDTests\obj\CRUDTests.csproj.nuget.dgspec.json"/>
+        <_ContentIncludedByDefault Remove="CRUDTests\obj\project.assets.json"/>
+        <_ContentIncludedByDefault Remove="CRUDTests\obj\project.packagespec.json"/>
     </ItemGroup>
-
-
-
-
-
 
 
 </Project>

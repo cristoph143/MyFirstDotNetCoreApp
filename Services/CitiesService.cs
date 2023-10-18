@@ -4,7 +4,8 @@ namespace Services;
 
 public class CitiesService : ICitiesService, IDisposable
 {
-    private readonly List<string> _cities = new() {
+    private readonly List<string> _cities = new()
+    {
         "London",
         "Paris",
         "New York",
@@ -20,6 +21,7 @@ public class CitiesService : ICitiesService, IDisposable
     {
         return _cities;
     }
+
     public void Dispose()
     {
         //TO DO: add logic to close db connection

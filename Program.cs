@@ -28,7 +28,7 @@ internal abstract class Program
         //     config.AddJsonFile("MyOwnConfig.json", optional: true, reloadOnChange: true);
         // });
         //Load MyOwnConfig.json
-        builder.Configuration.AddJsonFile("MyOwnConfig.json", optional: true, reloadOnChange: true);
+        builder.Configuration.AddJsonFile("MyOwnConfig.json", true, true);
         // builder.Services.Add(new ServiceDescriptor(
         //     typeof(ICitiesService),
         //     typeof(CitiesService),
@@ -53,7 +53,7 @@ internal abstract class Program
         {
             // Retrieve the secret
             var configuration = builder.Configuration;
-            string finnhubToken = configuration["FinnhubToken"];
+            var finnhubToken = configuration["FinnhubToken"];
 
             // Register FinnhubService with the secret
             containerBuilder.RegisterType<FinnhubService>()
@@ -64,10 +64,7 @@ internal abstract class Program
         builder.Services.Configure<TradingOptions>(
             builder.Configuration.GetSection(nameof(TradingOptions))); //add IOptions<TradingOptions> as a service
         var app = builder.Build();
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        if (app.Environment.IsDevelopment()) app.UseDeveloperExceptionPage();
         app.UseStaticFiles();
         app.UseRouting();
         // app.UseEndpoints(endpoints =>
@@ -83,7 +80,8 @@ internal abstract class Program
         {
             await context.Response.WriteAsync(app.Configuration["mykEY"] + "\n");
             await context.Response.WriteAsync(app.Configuration.GetValue<string>("MyKey") + "\n");
-            await context.Response.WriteAsync(app.Configuration.GetValue("x", 10) + "\n");        });
+            await context.Response.WriteAsync(app.Configuration.GetValue("x", 10) + "\n");
+        });
         app.MapControllers();
 
         app.Run();

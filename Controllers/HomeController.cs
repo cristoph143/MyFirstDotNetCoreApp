@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MyFirstDotNetCoreApp.Models;
 using ServiceContracts;
+
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
@@ -16,7 +17,7 @@ public class HomeController(
     ILifetimeScope lifeTimeScope,
     IWebHostEnvironment webHostEnvironment,
     IOptions<WeatherApiOptions> weatherApiOptions
-    ) : Controller
+) : Controller
 {
     private readonly WeatherApiOptions _options = weatherApiOptions.Value;
 
@@ -29,7 +30,7 @@ public class HomeController(
     [Route("/get-cities")]
     public IActionResult GetCities()
     {
-        List<string> cities1 = citiesService.GetCities();
+        var cities1 = citiesService.GetCities();
         return View(cities1);
     }
 
@@ -71,14 +72,14 @@ public class HomeController(
     [Route("/from-services")]
     public IActionResult FromServices([FromServices] ICitiesService _citiesService)
     {
-        List<string> cities = _citiesService.GetCities();
+        var cities = _citiesService.GetCities();
         return View(cities);
     }
 
     [Route("/from-singleton")]
     public IActionResult Singleton()
     {
-        List<string> cities = citiesService1.GetCities();
+        var cities = citiesService1.GetCities();
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
@@ -88,17 +89,18 @@ public class HomeController(
     [Route("/from-serviceScope")]
     public IActionResult ServiceScope()
     {
-        List<string> cities = citiesService1.GetCities();
+        var cities = citiesService1.GetCities();
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
-        using (IServiceScope scope = serviceScopeFactory.CreateScope())
+        using (var scope = serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
-            ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
+            var citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
             //DB work
             ViewBag.InstanceId_CitiesServicece_InScope = citiesService.ServiceInstanceId;
         } //end of scope; it calls CitiesService.Dispose()
+
         return View(cities);
     }
 
@@ -107,7 +109,7 @@ public class HomeController(
     {
         //ViewBag.ClientID = _configuration["weatherapi:ClientID"];
         //ViewBag.ClientSecret = _configuration.GetValue("weatherapi:ClientSecret", "the default client secret");
-        IConfigurationSection wetherapiSection = configuration.GetSection("weatherapi");
+        var wetherapiSection = configuration.GetSection("weatherapi");
         ViewBag.ClientID = wetherapiSection["ClientID"];
         ViewBag.ClientSecret = wetherapiSection["ClientSecret"];
         return View();
@@ -119,7 +121,7 @@ public class HomeController(
         //Bind: Loads configuration values into a new Options object
         //WeatherApiOptions options = _configuration.GetSection("weatherapi").Get<WeatherApiOptions>();
         //Bind: Loads configuration values into existing Options object
-        WeatherApiOptions options = new WeatherApiOptions();
+        var options = new WeatherApiOptions();
         configuration.GetSection("weatherApi").Bind(options);
         ViewBag.ClientID = options.ClientID;
         ViewBag.ClientSecret = options.ClientSecret;
@@ -129,34 +131,35 @@ public class HomeController(
     [Route("/view-injection")]
     public IActionResult ViewInjection()
     {
-        List<string> cities = citiesService1.GetCities();
+        var cities = citiesService1.GetCities();
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
-        using (IServiceScope scope = serviceScopeFactory.CreateScope())
+        using (var scope = serviceScopeFactory.CreateScope())
         {
             //Inject CitiesService
-            ICitiesService citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
+            var citiesService = scope.ServiceProvider.GetRequiredService<ICitiesService>();
             //DB work
             ViewBag.InstanceId_CitiesService_InScope = citiesService.ServiceInstanceId;
         } //end of scope; it calls CitiesService.Dispose()
+
         return View(cities);
     }
 
     [Route("/autoFac")]
     public IActionResult AutoFac()
     {
-        List<string> cities = citiesService1.GetCities();
+        var cities = citiesService1.GetCities();
         ViewBag.InstanceId_CitiesService_1 = citiesService1.ServiceInstanceId;
 
         ViewBag.InstanceId_CitiesService_2 = citiesService2.ServiceInstanceId;
 
         ViewBag.InstanceId_CitiesService_3 = citiesService3.ServiceInstanceId;
 
-        using (ILifetimeScope scope = lifeTimeScope.BeginLifetimeScope())
+        using (var scope = lifeTimeScope.BeginLifetimeScope())
         {
             //Inject CitiesService
-            ICitiesService citiesService = scope.Resolve<ICitiesService>();
+            var citiesService = scope.Resolve<ICitiesService>();
             //DB work
 
             ViewBag.InstanceId_CitiesService_InScope = citiesService.ServiceInstanceId;

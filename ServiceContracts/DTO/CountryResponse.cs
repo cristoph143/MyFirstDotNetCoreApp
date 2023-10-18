@@ -11,5 +11,8 @@ public class CountryResponse
 public static class CountryExtensions
 {
     //Converts from Country object to CountryResponse object
-    public static CountryResponse ToCountryResponse(this Country country) => new() {  CountryID = country.CountryID, CountryName = country.CountryName };
+    public static CountryResponse ToCountryResponse(this Country country)
+    {
+        return new CountryResponse { CountryID = country.CountryID, CountryName = country.CountryName };
+    }
 }

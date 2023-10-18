@@ -2,46 +2,45 @@
 using Microsoft.Extensions.Configuration;
 using ServiceContracts;
 
-namespace StocksApp.Services
+namespace StocksApp.Services;
+
+public class FinnhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+    : IFinnhubService
 {
-    public class FinnhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
-        : IFinnhubService
+    public Dictionary<string, object>? GetCompanyProfile(string stockSymbol)
     {
-        private async Task<Dictionary<string, object>?> SendHttpRequest(string endpoint, string stockSymbol)
+        var endpoint = "stock/profile2";
+        return SendHttpRequest(endpoint, stockSymbol).GetAwaiter().GetResult();
+    }
+
+    public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
+    {
+        var endpoint = "quote";
+        return await SendHttpRequest(endpoint, stockSymbol);
+    }
+
+    private async Task<Dictionary<string, object>?> SendHttpRequest(string endpoint, string stockSymbol)
+    {
+        using var httpClient = httpClientFactory.CreateClient();
+        var token = configuration.GetSection("FinnhubToken").Value;
+        var requestUri = $"https://finnhub.io/api/v1/{endpoint}?symbol={stockSymbol}&token={token}";
+
+        var httpRequestMessage = new HttpRequestMessage
         {
-            using HttpClient httpClient = httpClientFactory.CreateClient();
-            string token = configuration.GetSection("FinnhubToken").Value;
-            string requestUri = $"https://finnhub.io/api/v1/{endpoint}?symbol={stockSymbol}&token={token}";
+            RequestUri = new Uri(requestUri),
+            Method = HttpMethod.Get
+        };
 
-            HttpRequestMessage httpRequestMessage = new HttpRequestMessage
-            {
-                RequestUri = new Uri(requestUri),
-                Method = HttpMethod.Get
-            };
+        var httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
+        var response = await httpResponseMessage.Content.ReadAsStringAsync();
 
-            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(httpRequestMessage);
-            string response = await httpResponseMessage.Content.ReadAsStringAsync();
+        var responseDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(response);
 
-            Dictionary<string, object>? responseDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(response);
+        if (responseDictionary == null)
+            throw new InvalidOperationException("No response from server");
 
-            if (responseDictionary == null)
-                throw new InvalidOperationException("No response from server");
-
-            return responseDictionary.TryGetValue("error", out var value)
-                ? throw new InvalidOperationException(Convert.ToString(value))
-                : responseDictionary;
-        }
-
-        public Dictionary<string, object>? GetCompanyProfile(string stockSymbol)
-        {
-            string endpoint = "stock/profile2";
-            return SendHttpRequest(endpoint, stockSymbol).GetAwaiter().GetResult();
-        }
-
-        public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
-        {
-            string endpoint = "quote";
-            return await SendHttpRequest(endpoint, stockSymbol);
-        }
+        return responseDictionary.TryGetValue("error", out var value)
+            ? throw new InvalidOperationException(Convert.ToString(value))
+            : responseDictionary;
     }
 }

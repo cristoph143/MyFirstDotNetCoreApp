@@ -6,19 +6,20 @@ using StocksApp.Services;
 namespace MyFirstDotNetCoreApp.Controllers;
 
 [Route("[controller]")]
-
 public class StocksController(
-        FinnhubService finnhubService, 
-        IOptions<TradingOptions> tradingOptions,
-        IConfiguration configuration
-        ): Controller
+    FinnhubService finnhubService,
+    IOptions<TradingOptions> tradingOptions,
+    IConfiguration configuration
+) : Controller
 {
+    private readonly TradingOptions _tradingOptions = tradingOptions.Value;
+
     [Route("/stocks")]
     public async Task<IActionResult> Index()
     {
         tradingOptions.Value.DefaultStockSymbol ??= "MSFT";
-        Dictionary<string, object>? responseDictionary = await finnhubService.GetStockPriceQuote(tradingOptions.Value.DefaultStockSymbol);
-        Stock stock = new Stock
+        var responseDictionary = await finnhubService.GetStockPriceQuote(tradingOptions.Value.DefaultStockSymbol);
+        var stock = new Stock
         {
             StockSymbol = tradingOptions.Value.DefaultStockSymbol,
             CurrentPrice = Convert.ToDouble(responseDictionary["c"].ToString()),
@@ -29,19 +30,17 @@ public class StocksController(
         return View(stock);
     }
 
-    private readonly TradingOptions _tradingOptions = tradingOptions.Value;
-
     [Route("/stock-trade")]
     public async Task<IActionResult> Trade()
     {
         //reset stock symbol if not exists
         if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
             _tradingOptions.DefaultStockSymbol = "MSFT";
-        Dictionary<string, object>? companyProfileDictionary =
+        var companyProfileDictionary =
             finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
-        Dictionary<string, object>? stockQuoteDictionary =
+        var stockQuoteDictionary =
             await finnhubService.GetStockPriceQuote(_tradingOptions.DefaultStockSymbol);
-        StockTrade stockTrade = new StockTrade { StockSymbol = _tradingOptions.DefaultStockSymbol };
+        var stockTrade = new StockTrade { StockSymbol = _tradingOptions.DefaultStockSymbol };
         if (companyProfileDictionary != null && stockQuoteDictionary != null)
         {
             if (companyProfileDictionary.TryGetValue("ticker", out var value))

@@ -1,24 +1,24 @@
 ﻿@{
-    string title = ViewData["Title"]?.ToString() ?? "Default Title";
+    var title = ViewData["Title"]?.ToString() ?? "Default Title";
     ViewBag.Title = title;
 }
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>@title</title>
-        <meta charset="utf-8" />
-        <link href="~/Styles/StyleSheet.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="container">
-            <h1>@title</h1>
+<head>
+    <title>@title</title>
+    <meta charset="utf-8"/>
+    <link href="~/Styles/StyleSheet.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>@title</h1>
 
-            <div class="box">
-                <div>@ViewBag.ClientID</div>
-                <div>@ViewBag.ClientSecret</div>
-            </div>
-        </div>
+    <div class="box">
+        <div>@ViewBag.ClientID</div>
+        <div>@ViewBag.ClientSecret</div>
+    </div>
+</div>
 
-    </body>
+</body>
 </html>

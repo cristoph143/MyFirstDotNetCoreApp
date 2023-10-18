@@ -1,10 +1,10 @@
 @{
     Layout = "~/Views/Shared/_MasterLayout.cshtml";
-}      
+}
 
 @functions {
 
-    private static readonly Dictionary<string, string> UrlLinkTextMap = new Dictionary<string, string>
+    private static readonly Dictionary<string, string> UrlLinkTextMap = new()
     {
         { "/", "Home" },
         { "/about-company", "About" },
@@ -23,8 +23,9 @@
         { "/hierarchical-configuration", "Hierarchical Configuration" },
         { "/options-pattern", "Options Pattern" },
         { "/config-service", "Config Service" },
-        { "/stocks", "Stock"},
-        { "/stock-trade", "Stock Trade"}
+        { "/stocks", "Stock" },
+        { "/stock-trade", "Stock Trade" },
+        { "/persons/index", "Person" }
     };
 
     private static List<string> GetUrls()
@@ -38,6 +39,7 @@
     // Define and return the link text based on the URL
         return UrlLinkTextMap.TryGetValue(url, out var linkText) ? linkText : string.Empty;
     }
+
 }
 
 <!DOCTYPE html>
@@ -46,7 +48,7 @@
 <head>
     <meta name="viewport" content="width=device-width"/>
     <title>@ViewBag.Title</title>
-        <link href="~/Styles/StyleSheet.css" rel="stylesheet" />
+    <link href="~/Styles/StyleSheet.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">

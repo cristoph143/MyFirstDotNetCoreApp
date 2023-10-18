@@ -5,7 +5,7 @@ const stockSymbol = document.getElementById("StockSymbol").value; //get symbol f
 
 // Connection opened. Subscribe to a symbol
 socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': stockSymbol }))
+    socket.send(JSON.stringify({'type': 'subscribe', 'symbol': stockSymbol}))
 });
 
 // Listen (ready to receive) for messages

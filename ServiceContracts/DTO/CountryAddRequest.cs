@@ -6,5 +6,8 @@ public class CountryAddRequest
 {
     public string? CountryName { get; set; }
 
-    public Country ToCountry() => new() { CountryName = CountryName };
+    public Country ToCountry()
+    {
+        return new Country { CountryName = CountryName };
+    }
 }

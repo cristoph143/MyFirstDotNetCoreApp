@@ -6,12 +6,12 @@ public class UnitTest1
     public void Test1()
     {
         // Arrange
-        MyMath mm = new MyMath();
+        var mm = new MyMath();
         int input1 = 10, input2 = 5;
-        int expected = 15;
+        var expected = 15;
 
         // Act
-        int actual = mm.Add(input1, input2);
+        var actual = mm.Add(input1, input2);
 
         // Assert
         Assert.Equal(expected, actual);
