@@ -32,11 +32,11 @@ public class StocksController(
     private readonly TradingOptions _tradingOptions = tradingOptions.Value;
 
     [Route("/stock-trade")]
-    [Route("[action]")]
-    [Route("~/[controller]")]
     public async Task<IActionResult> Trade()
     {
-        tradingOptions.Value.DefaultStockSymbol ??= "MSFT";
+        //reset stock symbol if not exists
+        if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
+            _tradingOptions.DefaultStockSymbol = "MSFT";
         Dictionary<string, object>? companyProfileDictionary =
             finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
         Dictionary<string, object>? stockQuoteDictionary =
@@ -51,6 +51,7 @@ public class StocksController(
             if (stockQuoteDictionary.TryGetValue("c", out var value2))
                 stockTrade.Price = Convert.ToDouble(value2.ToString() ?? "0");
         }
+
 
         ViewBag.FinnhubToken = configuration["FinnhubToken"];
         return View(stockTrade);
