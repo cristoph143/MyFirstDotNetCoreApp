@@ -78,7 +78,7 @@ public class PersonServiceTest
         Guid? personID = null;
 
         //Act
-        PersonResponse? personResponseFromGet = 
+        PersonResponse? personResponseFromGet =
             _personService.GetPersonByPersonId(personID);
 
         //Assert
@@ -91,28 +91,116 @@ public class PersonServiceTest
     public void GetPersonByPersonID_WithPersonID()
     {
         //Arrange
-        CountryAddRequest countryRequest = 
+        CountryAddRequest countryRequest =
             new CountryAddRequest { CountryName = "Canada" };
-        CountryResponse countryResponse = 
+        CountryResponse countryResponse =
             _countriesService.AddCountry(countryRequest);
-        PersonAddRequest personRequest = 
+        PersonAddRequest personRequest =
             new PersonAddRequest
             {
-                PersonName = "person name...", 
-                Email = "email@sample.com", 
-                Address = "address", 
-                CountryID = countryResponse.CountryId, 
-                DateOfBirth = DateTime.Parse("2000-01-01"), 
-                Gender = GenderOptions.Male, 
+                PersonName = "person name...",
+                Email = "email@sample.com",
+                Address = "address",
+                CountryID = countryResponse.CountryId,
+                DateOfBirth = DateTime.Parse("2000-01-01"),
+                Gender = GenderOptions.Male,
                 ReceiveNewsLetters = false
             };
         PersonResponse personResponseFromAdd =
             _personService.AddPerson(personRequest);
-        PersonResponse? personResponseFromGet = 
+        PersonResponse? personResponseFromGet =
             _personService.GetPersonByPersonId(personResponseFromAdd.PersonId);
         //Assert
         Assert.Equal(personResponseFromAdd, personResponseFromGet);
     }
 
+    #endregion
+
+    #region GetAllPersons
+
+    //The GetAllPersons() should return an empty list by default
+    [Fact]
+    public void GetAllPersons_EmptyList()
+    {
+        //Act
+        List<PersonResponse> personsFromGet = _personService.GetAllPersons();
+
+        //Assert
+        Assert.Empty(personsFromGet);
+    }
+
+
+    //First, we will add few persons; and then when we call GetAllPersons(), it should return the same persons that were added
+    [Fact]
+    public void GetAllPersons_AddFewPersons()
+    {
+        //Arrange
+        CountryAddRequest countryRequest1 = new CountryAddRequest
+        {
+            CountryName = "USA"
+        };
+        CountryAddRequest countryRequest2 = new CountryAddRequest
+        {
+            CountryName = "India"
+        };
+
+        CountryResponse countryResponse1 = _countriesService.AddCountry(countryRequest1);
+        CountryResponse countryResponse2 = _countriesService.AddCountry(countryRequest2);
+
+        PersonAddRequest personRequest1 = new PersonAddRequest
+        {
+            PersonName = "Smith",
+            Email = "smith@example.com",
+            Gender = GenderOptions.Male,
+            Address = "address of smith",
+            CountryID = countryResponse1.CountryId,
+            DateOfBirth = DateTime.Parse("2002-05-06"),
+            ReceiveNewsLetters = true
+        };
+        PersonAddRequest personRequest2 = new PersonAddRequest
+        {
+            PersonName = "Mary",
+            Email = "mary@example.com",
+            Gender = GenderOptions.Female,
+            Address = "address of mary",
+            CountryID = countryResponse2.CountryId,
+            DateOfBirth = DateTime.Parse("2000-02-02"),
+            ReceiveNewsLetters = false
+        };
+        PersonAddRequest personRequest3 = new PersonAddRequest
+        {
+            PersonName = "Rahman",
+            Email = "rahman@example.com",
+            Gender = GenderOptions.Male,
+            Address = "address of rahman",
+            CountryID = countryResponse2.CountryId,
+            DateOfBirth = DateTime.Parse("1999-03-03"),
+            ReceiveNewsLetters = true
+        };
+
+        List<PersonAddRequest> personRequests = new List<PersonAddRequest>
+        {
+            personRequest1,
+            personRequest2,
+            personRequest3
+        };
+
+        List<PersonResponse> personResponseListFromAdd = new List<PersonResponse>();
+
+        foreach (PersonAddRequest person_request in personRequests)
+        {
+            PersonResponse person_response = _personService.AddPerson(person_request);
+            personResponseListFromAdd.Add(person_response);
+        }
+
+        //Act
+        List<PersonResponse> persons_list_from_get = _personService.GetAllPersons();
+        
+        //Assert
+        foreach (PersonResponse person_response_from_add in personResponseListFromAdd)
+        {
+            Assert.Contains(person_response_from_add, persons_list_from_get);
+        }
+    }
     #endregion
 }
