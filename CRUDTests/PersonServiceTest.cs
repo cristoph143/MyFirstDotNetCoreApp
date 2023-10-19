@@ -384,7 +384,7 @@ public class PersonServiceTest
             _testOutputHelper.WriteLine(personResponseFromAdd.ToString());
 
         //Act
-        List<PersonResponse> personsListFromSearch = 
+        List<PersonResponse> personsListFromSearch =
             _personService.GetFilteredPersons(nameof(Person.PersonName), "ma");
 
         //print persons_list_from_get
@@ -402,4 +402,90 @@ public class PersonServiceTest
     }
 
     #endregion
+
+    #region GetSortedPersons
+
+    //When we sort based on PersonName in DESC, it should return persons list in descending on PersonName
+    [Fact]
+    public void GetSortedPersons()
+    {
+        //Arrange
+        CountryAddRequest countryRequest1 = new CountryAddRequest { CountryName = "USA" };
+        CountryAddRequest countryRequest2 = new CountryAddRequest { CountryName = "India" };
+
+        CountryResponse? countryResponse1 = _countriesService.AddCountry(countryRequest1);
+        CountryResponse? countryResponse2 = _countriesService.AddCountry(countryRequest2);
+
+        PersonAddRequest personRequest1 = new PersonAddRequest
+        {
+            PersonName = "Smith",
+            Email = "smith@example.com",
+            Gender = GenderOptions.Male,
+            Address = "address of smith",
+            CountryID = countryResponse1?.CountryId,
+            DateOfBirth = DateTime.Parse("2002-05-06"),
+            ReceiveNewsLetters = true
+        };
+        PersonAddRequest personRequest2 = new PersonAddRequest
+        {
+            PersonName = "Mary",
+            Email = "mary@example.com",
+            Gender = GenderOptions.Female,
+            Address = "address of mary",
+            CountryID = countryResponse2?.CountryId,
+            DateOfBirth = DateTime.Parse("2000-02-02"),
+            ReceiveNewsLetters = false
+        };
+        PersonAddRequest personRequest3 = new PersonAddRequest
+        {
+            PersonName = "Rahman",
+            Email = "rahman@example.com",
+            Gender = GenderOptions.Male,
+            Address = "address of rahman",
+            CountryID = countryResponse2?.CountryId,
+            DateOfBirth = DateTime.Parse("1999-03-03"),
+            ReceiveNewsLetters = true
+        };
+        List<PersonAddRequest> personRequests = new List<PersonAddRequest>
+      {
+          personRequest1,
+          personRequest2,
+          personRequest3
+      };
+        List<PersonResponse> personResponseListFromAdd = new List<PersonResponse>();
+        foreach (PersonAddRequest personRequest in personRequests)
+        {
+            PersonResponse personResponse = _personService.AddPerson(personRequest);
+            personResponseListFromAdd.Add(personResponse);
+        }
+
+        //print person_response_list_from_add
+        _testOutputHelper.WriteLine("Expected:");
+        foreach (PersonResponse personResponseFromAdd in personResponseListFromAdd)
+        {
+            _testOutputHelper.WriteLine(personResponseFromAdd.ToString());
+        }
+        List<PersonResponse> allPersons = _personService.GetAllPersons();
+
+        //Act
+        List<PersonResponse> personsListFromSort = _personService.GetSortedPersons(allPersons,
+            nameof(Person.PersonName),
+            SortOrderOptions.DESC);
+
+        //print persons_list_from_get
+        _testOutputHelper.WriteLine("Actual:");
+        foreach (PersonResponse personResponseFromGet in personsListFromSort)
+        {
+            _testOutputHelper.WriteLine(personResponseFromGet.ToString());
+        }
+        personResponseListFromAdd = personResponseListFromAdd.OrderByDescending(temp => temp.PersonName).ToList();
+
+        //Assert
+        for (int i = 0; i < personResponseListFromAdd.Count; i++)
+        {
+            Assert.Equal(personResponseListFromAdd[i], personsListFromSort[i]);
+        }
+    }
+    #endregion
+
 }

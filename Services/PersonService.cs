@@ -93,4 +93,9 @@ public class PersonService : IPersonService
             _ => allPersons
         };
     }
+
+    public List<PersonResponse> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using ServiceContracts.DTO;
-
 namespace ServiceContracts;
 
 public interface IPersonService
@@ -33,4 +32,13 @@ public interface IPersonService
     /// <param name="searchString">Search string to search</param>
     /// <returns>Returns all matching persons based on the given search field and search string</returns>
     List<PersonResponse> GetFilteredPersons(string searchBy, string? searchString);
+
+    /// <summary>
+    /// Returns sorted list of persons
+    /// </summary>
+    /// <param name="allPersons">Represents list of persons to sort</param>
+    /// <param name="sortBy">Name of the property (key), based on which the persons should be sorted</param>
+    /// <param name="sortOrder">ASC or DESC</param>
+    /// <returns>Returns sorted persons as PersonResponse list</returns>
+    List<PersonResponse> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder);
 }
