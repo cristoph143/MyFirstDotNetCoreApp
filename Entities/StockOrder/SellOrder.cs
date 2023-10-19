@@ -6,7 +6,7 @@ public class SellOrder
 {
     [Key]
     public Guid SellOrderID { get; set; }
-    public string StockSymbol { get; set; }
+    public string? StockSymbol { get; set; }
     [Required(ErrorMessage = "Stock Name can't be null or empty")]
     public string StockName { get; set; }
     public DateTime DateAndTimeOfOrder { get; set; }
