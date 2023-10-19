@@ -13,13 +13,13 @@ public interface ICountriesService
     /// </summary>
     /// <param name="countryAddRequest">The country details to add.</param>
     /// <returns>The added country details.</returns>
-    CountryResponse AddCountry(CountryAddRequest? countryAddRequest);
+    CountryResponse? AddCountry(CountryAddRequest? countryAddRequest);
 
     /// <summary>
     /// Gets all countries.
     /// </summary>
     /// <returns>A list of all country details.</returns>
-    List<CountryResponse> GetAllCountries();
+    List<CountryResponse?> GetAllCountries();
 
     /// <summary>
     /// Gets a country by ID.

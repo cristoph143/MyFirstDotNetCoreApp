@@ -25,7 +25,7 @@ public class CountryResponse
 public static class CountryExtensions
 {
     //Converts from Country object to CountryResponse object
-    public static CountryResponse ToCountryResponse(this Country country) => 
+    public static CountryResponse? ToCountryResponse(this Country country) => 
         new()
         {
             CountryId = country.CountryID, 

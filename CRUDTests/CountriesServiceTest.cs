@@ -66,7 +66,7 @@ public class CountriesServiceTest
         CountryAddRequest request = new CountryAddRequest { CountryName = "Japan" };
 
         //Act
-        CountryResponse response = _countriesService.AddCountry(request);
+        CountryResponse? response = _countriesService.AddCountry(request);
         List<CountryResponse> countriesFromGetAllCountries = _countriesService.GetAllCountries();
 
         //Assert
@@ -99,7 +99,7 @@ public class CountriesServiceTest
         };
 
         //Act
-        List<CountryResponse> countriesListFromAddCountry = new List<CountryResponse>();
+        List<CountryResponse?> countriesListFromAddCountry = new List<CountryResponse?>();
 
         foreach (CountryAddRequest countryRequest in countryRequestList)
         {
@@ -109,7 +109,7 @@ public class CountriesServiceTest
         List<CountryResponse> actualCountryResponseList = _countriesService.GetAllCountries();
 
         //read each element from countries_list_from_add_country
-        foreach (CountryResponse expectedCountry in countriesListFromAddCountry)
+        foreach (CountryResponse? expectedCountry in countriesListFromAddCountry)
         {
             Assert.Contains(expectedCountry, actualCountryResponseList);
         }
@@ -141,7 +141,7 @@ public class CountriesServiceTest
         //Arrange
         CountryAddRequest countryAddRequest = 
             new CountryAddRequest { CountryName = "China" };
-        CountryResponse countryResponseFromAdd = 
+        CountryResponse? countryResponseFromAdd = 
             _countriesService.AddCountry(countryAddRequest);
 
         //Act

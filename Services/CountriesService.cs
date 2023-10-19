@@ -8,7 +8,7 @@ public class CountriesService : ICountriesService
 {
     //private field
     private readonly List<Country> _countries = new();
-    public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+    public CountryResponse? AddCountry(CountryAddRequest? countryAddRequest)
     {
         //Validation: countryAddRequest parameter can't be null
         if (countryAddRequest == null)
@@ -30,15 +30,21 @@ public class CountriesService : ICountriesService
         return country.ToCountryResponse();
     }
 
-    public List<CountryResponse> GetAllCountries()
+    public List<CountryResponse?> GetAllCountries()
     {
         return _countries.Select(
             country => country.ToCountryResponse()
         ).ToList();
     }
 
-    public CountryResponse? GetCountryByCountryId(Guid? countryID)
+    public CountryResponse? GetCountryByCountryId(Guid? countryId)
     {
-        throw new NotImplementedException();
+        if (countryId == null)
+            return null;
+
+        Country? countryResponseFromList = 
+            _countries.FirstOrDefault(temp => temp.CountryID == countryId);
+
+        return countryResponseFromList?.ToCountryResponse();
     }
 }
