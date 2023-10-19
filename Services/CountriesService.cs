@@ -36,4 +36,9 @@ public class CountriesService : ICountriesService
             country => country.ToCountryResponse()
         ).ToList();
     }
+
+    public CountryResponse? GetCountryByCountryId(Guid? countryID)
+    {
+        throw new NotImplementedException();
+    }
 }
