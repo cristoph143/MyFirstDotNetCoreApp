@@ -1,7 +1,7 @@
 ﻿using Entities;
-
+using ServiceContracts.Enum;
 namespace ServiceContracts.DTO;
-
+using System;
 public class PersonResponse
 {
     public Guid PersonId { get; set; }
@@ -45,6 +45,23 @@ public class PersonResponse
             $"Country: {Country}, " +
             $"Address: {Address}, " +
             $"Receive News Letters: {ReceiveNewsLetters}";
+    }
+
+    public PersonUpdateRequest ToPersonUpdateRequest()
+    {
+        return new PersonUpdateRequest()
+        {
+            PersonId = PersonId,
+            PersonName = PersonName,
+            Email = Email,
+            DateOfBirth = DateOfBirth,
+            Gender = (GenderOptions)Enum.Parse(typeof(GenderOptions),
+                Gender,
+                true),
+            Address = Address,
+            CountryId = CountryId,
+            ReceiveNewsLetters = ReceiveNewsLetters
+        };
     }
 }
 
