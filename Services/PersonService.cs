@@ -43,8 +43,12 @@ public class PersonService : IPersonService
     public List<PersonResponse> GetAllPersons() =>
                 throw new NotImplementedException();
 
-    public PersonResponse? GetPersonByPersonId(Guid? personID)
+    public PersonResponse? GetPersonByPersonId(Guid? personId)
     {
-        throw new NotImplementedException();
+        if (personId == null)
+            return null;
+
+        Person? person = _persons.FirstOrDefault(temp => temp.PersonId == personId);
+        return person?.ToPersonResponse();
     }
 }
