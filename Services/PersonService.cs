@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -56,6 +57,40 @@ public class PersonService : IPersonService
 
     public List<PersonResponse> GetFilteredPersons(string searchBy, string? searchString)
     {
-        throw new NotImplementedException();
+        List<PersonResponse> allPersons = GetAllPersons();
+
+        if (string.IsNullOrEmpty(searchBy) || string.IsNullOrEmpty(searchString))
+        {
+            return allPersons;
+        }
+
+        return searchBy switch
+        {
+            nameof(Person.PersonName) => allPersons.Where(temp =>
+                string.IsNullOrEmpty(temp.PersonName) ||
+                temp.PersonName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(),
+
+            nameof(Person.Email) => allPersons.Where(temp =>
+                string.IsNullOrEmpty(temp.Email) ||
+                temp.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(),
+
+            nameof(Person.DateOfBirth) => allPersons.Where(temp =>
+                temp.DateOfBirth?.ToString("dd MMMM yyyy", CultureInfo.InvariantCulture)
+                    .Contains(searchString, StringComparison.OrdinalIgnoreCase) == true).ToList(),
+
+            nameof(Person.Gender) => allPersons.Where(temp =>
+                string.IsNullOrEmpty(temp.Gender) ||
+                temp.Gender.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(),
+
+            nameof(Person.CountryId) => allPersons.Where(temp =>
+                string.IsNullOrEmpty(temp.Country) ||
+                temp.Country.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(),
+
+            nameof(Person.Address) => allPersons.Where(temp =>
+                string.IsNullOrEmpty(temp.Address) ||
+                temp.Address.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(),
+
+            _ => allPersons
+        };
     }
 }
