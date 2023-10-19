@@ -1,0 +1,140 @@
+﻿{
+  "testCases": [
+    {
+      "testName": "CreateBuyOrder_NullBuyOrder_ToBeArgumentNullException",
+      "buyOrderRequest": null
+    },
+    {
+      "testName": "CreateBuyOrder_QuantityIsLessThanMinimum_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 1,
+        "quantity": 0
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_QuantityIsGreaterThanMaximum_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 1,
+        "quantity": 100001
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_PriceIsLessThanMinimum_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 0,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_PriceIsGreaterThanMaximum_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 10001,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_StockSymbolIsNull_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": null,
+        "price": 1,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_DateOfOrderIsLessThanYear2000_ToBeArgumentException",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "dateAndTimeOfOrder": "1999-12-31T00:00:00",
+        "price": 1,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateBuyOrder_ValidData_ToBeSuccessful",
+      "buyOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "dateAndTimeOfOrder": "2024-12-31T00:00:00",
+        "price": 1,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateSellOrder_NullSellOrder_ToBeArgumentNullException",
+      "sellOrderRequest": null
+    },
+    {
+      "testName": "CreateSellOrder_QuantityIsLessThanMinimum_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 1,
+        "quantity": 0
+      }
+    },
+    {
+      "testName": "CreateSellOrder_QuantityIsGreaterThanMaximum_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 1,
+        "quantity": 100001
+      }
+    },
+    {
+      "testName": "CreateSellOrder_PriceIsLessThanMinimum_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 0,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateSellOrder_PriceIsGreaterThanMaximum_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "price": 10001,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateSellOrder_StockSymbolIsNull_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": null,
+        "price": 1,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateSellOrder_DateOfOrderIsLessThanYear2000_ToBeArgumentException",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "dateAndTimeOfOrder": "1999-12-31T00:00:00",
+        "price": 1,
+        "quantity": 1
+      }
+    },
+    {
+      "testName": "CreateSellOrder_ValidData_ToBeSuccessful",
+      "sellOrderRequest": {
+        "stockSymbol": "MSFT",
+        "stockName": "Microsoft",
+        "dateAndTimeOfOrder": "2024-12-31T00:00:00",
+        "price": 1,
+        "quantity": 1
+      }
+    }
+  ]
+}
