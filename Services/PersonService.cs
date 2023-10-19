@@ -157,8 +157,16 @@ public class PersonService : IPersonService
         return matchingPerson.ToPersonResponse();
     }
 
-    public bool DeletePerson(Guid? personID)
+    public bool DeletePerson(Guid? personId)
     {
-        throw new NotImplementedException();
+        if (personId == null)
+            throw new ArgumentNullException(nameof(personId));
+
+        Person? person = _persons.FirstOrDefault(temp => temp.PersonId == personId);
+        if (person == null)
+            return false;
+
+        _persons.RemoveAll(temp => temp.PersonId == personId);
+        return true;
     }
 }
