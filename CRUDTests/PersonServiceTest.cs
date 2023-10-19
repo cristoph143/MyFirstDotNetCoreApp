@@ -511,7 +511,7 @@ public class PersonServiceTest
     public void UpdatePerson_InvalidPersonID()
     {
         //Arrange
-        PersonUpdateRequest person_update_request = new PersonUpdateRequest
+        PersonUpdateRequest personUpdateRequest = new PersonUpdateRequest
         {
             PersonId = Guid.NewGuid()
         };
@@ -520,7 +520,7 @@ public class PersonServiceTest
         Assert.Throws<ArgumentException>(() =>
         {
             //Act
-            _personService.UpdatePerson(person_update_request);
+            _personService.UpdatePerson(personUpdateRequest);
         });
     }
 
@@ -573,7 +573,7 @@ public class PersonServiceTest
         PersonAddRequest personAddRequest = new PersonAddRequest
         {
             PersonName = "John",
-            CountryID = countryResponseFromAdd.CountryId,
+            CountryID = countryResponseFromAdd?.CountryId,
             Address = "Abc road",
             DateOfBirth = DateTime.Parse("2000-01-01"),
             Email = "abc@example.com",
@@ -593,6 +593,53 @@ public class PersonServiceTest
         PersonResponse? personResponseFromGet = _personService.GetPersonByPersonId(personResponseFromUpdate.PersonId);
         //Assert
         Assert.Equal(personResponseFromGet, personResponseFromUpdate);
+    }
+
+    #endregion
+    #region DeletePerson
+
+    //If you supply an valid PersonID, it should return true
+    [Fact]
+    public void DeletePerson_ValidPersonID()
+    {
+        //Arrange
+        CountryAddRequest countryAddRequest = new CountryAddRequest
+        {
+            CountryName = "USA"
+        };
+        CountryResponse? countryResponseFromAdd = _countriesService.AddCountry(countryAddRequest);
+
+        PersonAddRequest personAddRequest = new PersonAddRequest
+        {
+            PersonName = "Jones",
+            Address = "address",
+            CountryID = countryResponseFromAdd?.CountryId,
+            DateOfBirth = Convert.ToDateTime("2010-01-01"),
+            Email = "jones@example.com",
+            Gender = GenderOptions.Male,
+            ReceiveNewsLetters = true
+        };
+
+        PersonResponse personResponseFromAdd = _personService.AddPerson(personAddRequest);
+
+
+        //Act
+        bool isDeleted = _personService.DeletePerson(personResponseFromAdd.PersonId);
+
+        //Assert
+        Assert.True(isDeleted);
+    }
+
+
+    //If you supply an invalid PersonID, it should return false
+    [Fact]
+    public void DeletePerson_InvalidPersonID()
+    {
+        //Act
+        bool isDeleted = _personService.DeletePerson(Guid.NewGuid());
+
+        //Assert
+        Assert.False(isDeleted);
     }
 
     #endregion
