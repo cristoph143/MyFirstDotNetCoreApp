@@ -130,4 +130,9 @@ public class PersonService : IPersonService
 
         return sortedPersons;
     }
+
+    public PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest)
+    {
+        throw new NotImplementedException();
+    }
 }
