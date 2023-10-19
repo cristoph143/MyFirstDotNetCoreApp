@@ -8,8 +8,6 @@
         <LangVersion>preview</LangVersion>
         <UserSecretsId>c7a23106-1d7c-4816-8cd4-9e4d908e5859</UserSecretsId>
     </PropertyGroup>
-
-
     <ItemGroup>
         <ProjectReference Include="ServiceContracts\ServiceContracts.csproj"/>
         <ProjectReference Include="Services\Services.csproj"/>
@@ -20,11 +18,10 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
         <PackageReference Include="xunit.assert" Version="2.4.2"/>
         <PackageReference Include="xunit.extensibility.core" Version="2.5.3"/>
-
-
     </ItemGroup>
-
-
+    <PropertyGroup>
+        <GenerateProgramFile>false</GenerateProgramFile>
+    </PropertyGroup>
     <ItemGroup>
         <_ContentIncludedByDefault Remove="CRUDTests\bin\Debug\net7.0\CRUDTests.deps.json"/>
         <_ContentIncludedByDefault Remove="CRUDTests\bin\Debug\net7.0\CRUDTests.runtimeconfig.json"/>

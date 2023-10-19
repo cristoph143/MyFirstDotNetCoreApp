@@ -6,11 +6,11 @@ namespace Services;
 
 public class CountriesService : ICountriesService
 {
-//private field
+    //private field
     private readonly List<Country> _countries = new();
     public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
     {
-//Validation: countryAddRequest parameter can't be null
+        //Validation: countryAddRequest parameter can't be null
         if (countryAddRequest == null)
             throw new ArgumentNullException(nameof(countryAddRequest));
 
@@ -28,5 +28,10 @@ public class CountriesService : ICountriesService
         //Add country object into _countries
         _countries.Add(country);
         return country.ToCountryResponse();
+    }
+
+    public List<CountryResponse> GetAllCountries()
+    {
+        throw new NotImplementedException();
     }
 }
