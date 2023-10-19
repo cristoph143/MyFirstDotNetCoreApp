@@ -1,17 +1,46 @@
-﻿using ServiceContracts;
+﻿using Entities;
+using ServiceContracts;
 using ServiceContracts.DTO;
 
 namespace Services;
 
 public class PersonService: IPersonService
 {
-    public PersonResponse AddPerson(PersonAddRequest? personAddRequest)
+    //private field
+    private readonly List<Person> _persons = new();
+    private readonly ICountriesService _countriesService = new CountriesService();
+
+
+    private PersonResponse ConvertPersonToPersonResponse(Person person)
     {
-        throw new NotImplementedException();
+        PersonResponse personResponse = person.ToPersonResponse();
+        personResponse.Country = 
+            _countriesService.GetCountryByCountryId(
+                person.CountryId)?.CountryName;
+        return personResponse;
     }
 
-    public List<PersonResponse> GetAllPersons()
+    public PersonResponse AddPerson(PersonAddRequest? personAddRequest)
     {
-        throw new NotImplementedException();
+        //check if PersonAddRequest is not null
+        if (personAddRequest == null)
+            throw new ArgumentNullException(nameof(personAddRequest));
+
+        // Validate PersonName
+        if (string.IsNullOrEmpty(personAddRequest.PersonName))
+            throw new ArgumentException("PersonName can't be blank");
+
+        //convert personAddRequest into Person type
+        Person person = personAddRequest.ToPerson();
+
+        //generate PersonID
+        person.PersonId = Guid.NewGuid();
+        //add person object to persons list
+        _persons.Add(person);
+        //convert the Person object into PersonResponse type
+        return ConvertPersonToPersonResponse(person);
     }
+
+    public List<PersonResponse> GetAllPersons() => 
+                throw new NotImplementedException();
 }
