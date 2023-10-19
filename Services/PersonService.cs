@@ -1,10 +1,11 @@
-﻿using Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
 namespace Services;
 
-public class PersonService: IPersonService
+public class PersonService : IPersonService
 {
     //private field
     private readonly List<Person> _persons = new();
@@ -14,7 +15,7 @@ public class PersonService: IPersonService
     private PersonResponse ConvertPersonToPersonResponse(Person person)
     {
         PersonResponse personResponse = person.ToPersonResponse();
-        personResponse.Country = 
+        personResponse.Country =
             _countriesService.GetCountryByCountryId(
                 person.CountryId)?.CountryName;
         return personResponse;
@@ -27,9 +28,7 @@ public class PersonService: IPersonService
             throw new ArgumentNullException(nameof(personAddRequest));
 
         // Validate PersonName
-        if (string.IsNullOrEmpty(personAddRequest.PersonName))
-            throw new ArgumentException("PersonName can't be blank");
-
+        ValidationHelper.ModelValidation(personAddRequest);
         //convert personAddRequest into Person type
         Person person = personAddRequest.ToPerson();
 
@@ -41,6 +40,11 @@ public class PersonService: IPersonService
         return ConvertPersonToPersonResponse(person);
     }
 
-    public List<PersonResponse> GetAllPersons() => 
+    public List<PersonResponse> GetAllPersons() =>
                 throw new NotImplementedException();
+
+    public PersonResponse? GetPersonByPersonId(Guid? personID)
+    {
+        throw new NotImplementedException();
+    }
 }
