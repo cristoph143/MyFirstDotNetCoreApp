@@ -2,12 +2,20 @@
 using ServiceContracts.DTO;
 using ServiceContracts.Enum;
 using Services;
+using Xunit.Abstractions;
+
 namespace CRUDTests;
 
 public class PersonServiceTest
 {
     private readonly IPersonService _personService = new PersonService();
     private readonly ICountriesService _countriesService = new CountriesService();
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public PersonServiceTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
 
     #region AddPerson
 
@@ -29,7 +37,7 @@ public class PersonServiceTest
     public void AddPerson_PersonNameIsNull()
     {
         //Arrange
-        PersonAddRequest? personAddRequest =
+        PersonAddRequest personAddRequest =
             new PersonAddRequest() { PersonName = null };
 
         //Act
@@ -44,7 +52,7 @@ public class PersonServiceTest
     public void AddPerson_ProperPersonDetails()
     {
         //Arrange
-        PersonAddRequest? personAddRequest =
+        PersonAddRequest personAddRequest =
             new PersonAddRequest
             {
                 PersonName = "Person name...",
@@ -75,11 +83,11 @@ public class PersonServiceTest
     public void GetPersonByPersonID_NullPersonID()
     {
         //Arrange
-        Guid? personID = null;
+        Guid? personId = null;
 
         //Act
         PersonResponse? personResponseFromGet =
-            _personService.GetPersonByPersonId(personID);
+            _personService.GetPersonByPersonId(personId);
 
         //Assert
         Assert.Null(personResponseFromGet);
@@ -93,7 +101,7 @@ public class PersonServiceTest
         //Arrange
         CountryAddRequest countryRequest =
             new CountryAddRequest { CountryName = "Canada" };
-        CountryResponse countryResponse =
+        CountryResponse? countryResponse =
             _countriesService.AddCountry(countryRequest);
         PersonAddRequest personRequest =
             new PersonAddRequest
@@ -101,7 +109,7 @@ public class PersonServiceTest
                 PersonName = "person name...",
                 Email = "email@sample.com",
                 Address = "address",
-                CountryID = countryResponse.CountryId,
+                CountryID = countryResponse?.CountryId,
                 DateOfBirth = DateTime.Parse("2000-01-01"),
                 Gender = GenderOptions.Male,
                 ReceiveNewsLetters = false
@@ -144,8 +152,8 @@ public class PersonServiceTest
             CountryName = "India"
         };
 
-        CountryResponse countryResponse1 = _countriesService.AddCountry(countryRequest1);
-        CountryResponse countryResponse2 = _countriesService.AddCountry(countryRequest2);
+        CountryResponse? countryResponse1 = _countriesService.AddCountry(countryRequest1);
+        CountryResponse? countryResponse2 = _countriesService.AddCountry(countryRequest2);
 
         PersonAddRequest personRequest1 = new PersonAddRequest
         {
@@ -153,7 +161,7 @@ public class PersonServiceTest
             Email = "smith@example.com",
             Gender = GenderOptions.Male,
             Address = "address of smith",
-            CountryID = countryResponse1.CountryId,
+            CountryID = countryResponse1?.CountryId,
             DateOfBirth = DateTime.Parse("2002-05-06"),
             ReceiveNewsLetters = true
         };
@@ -163,7 +171,7 @@ public class PersonServiceTest
             Email = "mary@example.com",
             Gender = GenderOptions.Female,
             Address = "address of mary",
-            CountryID = countryResponse2.CountryId,
+            CountryID = countryResponse2?.CountryId,
             DateOfBirth = DateTime.Parse("2000-02-02"),
             ReceiveNewsLetters = false
         };
@@ -173,7 +181,7 @@ public class PersonServiceTest
             Email = "rahman@example.com",
             Gender = GenderOptions.Male,
             Address = "address of rahman",
-            CountryID = countryResponse2.CountryId,
+            CountryID = countryResponse2?.CountryId,
             DateOfBirth = DateTime.Parse("1999-03-03"),
             ReceiveNewsLetters = true
         };
@@ -187,19 +195,32 @@ public class PersonServiceTest
 
         List<PersonResponse> personResponseListFromAdd = new List<PersonResponse>();
 
-        foreach (PersonAddRequest person_request in personRequests)
+        foreach (PersonAddRequest personRequest in personRequests)
         {
-            PersonResponse person_response = _personService.AddPerson(person_request);
-            personResponseListFromAdd.Add(person_response);
+            PersonResponse personResponse = _personService.AddPerson(personRequest);
+            personResponseListFromAdd.Add(personResponse);
+        }
+
+        //print person_response_list_from_add
+        _testOutputHelper.WriteLine("Expected:");
+        foreach (PersonResponse personResponseFromAdd in personResponseListFromAdd)
+        {
+            _testOutputHelper.WriteLine(personResponseFromAdd.ToString());
         }
 
         //Act
-        List<PersonResponse> persons_list_from_get = _personService.GetAllPersons();
-        
-        //Assert
-        foreach (PersonResponse person_response_from_add in personResponseListFromAdd)
+        List<PersonResponse> personsListFromGet = _personService.GetAllPersons();
+
+        //print persons_list_from_get
+        _testOutputHelper.WriteLine("Actual:");
+        foreach (PersonResponse personResponseFromGet in personsListFromGet)
         {
-            Assert.Contains(person_response_from_add, persons_list_from_get);
+            _testOutputHelper.WriteLine(personResponseFromGet.ToString());
+        }
+        //Assert
+        foreach (PersonResponse personResponseFromAdd in personResponseListFromAdd)
+        {
+            Assert.Contains(personResponseFromAdd, personsListFromGet);
         }
     }
     #endregion
