@@ -1,4 +1,15 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=02279822_002Deeaa_002D4a5e_002Db8f9_002D5e03c90ffb57/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CountriesServiceTest" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.CountriesServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.PersonServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.UnitTest1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.CreateBuyOrderServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.CreateSellOrderServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.GetBuyOrdersServiceTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::22CED5BF-6E81-4E44-94DA-A90EC536E5FF::net7.0::CRUDTests.GetSellOrdersServiceTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=21576b3a_002Df59f_002D4d51_002Da7f9_002D61e4daa52d75/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
@@ -11,7 +22,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2e11afe0_002D1c4d_002D4491_002D8dc8_002D19ea2c61078b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;CRUDTests&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="J:\Intern\Udemy\ASPDOTNetCore7\Repository\MyFirstDotNetCoreApp\CRUDTests" Presentation="&amp;lt;CRUDTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5030e655_002Debcd_002D4212_002D827d_002Db4b598436ac7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CRUDTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5030e655_002Debcd_002D4212_002D827d_002Db4b598436ac7/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" Name="All tests from &amp;lt;CRUDTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="J:\Intern\Udemy\ASPDOTNetCore7\Repository\MyFirstDotNetCoreApp\CRUDTests" Presentation="&amp;lt;CRUDTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
