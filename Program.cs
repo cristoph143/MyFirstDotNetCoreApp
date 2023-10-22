@@ -21,6 +21,9 @@ internal abstract class Program
         {
             containerBuilder.RegisterType<CitiesService>().As<ICitiesService>().InstancePerLifetimeScope(); //AddScoped
         });
+//add services into IoC container
+        builder.Services.AddSingleton<ICountriesService, CountriesService>();
+        builder.Services.AddSingleton<IPersonService, PersonService>();
         builder.Services.AddHttpClient();
         builder.Services.AddScoped<FinnhubService>();
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>

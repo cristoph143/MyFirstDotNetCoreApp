@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
+﻿using System.Globalization;
 using Entities;
 using ServiceContracts;
 using ServiceContracts.DTO;

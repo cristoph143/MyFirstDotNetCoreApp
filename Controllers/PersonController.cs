@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServiceContracts;
+using ServiceContracts.DTO;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
-public class PersonController : Controller
+public class PersonController(IPersonService personsService) : Controller
 {
     [Route("/persons/index")]
     public IActionResult Index()
     {
-        return View();
+        List<PersonResponse> persons = personsService.GetAllPersons();
+        return View(persons);
     }
 }
