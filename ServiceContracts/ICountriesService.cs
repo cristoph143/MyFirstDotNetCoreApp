@@ -19,7 +19,7 @@ public interface ICountriesService
     /// Gets all countries.
     /// </summary>
     /// <returns>A list of all country details.</returns>
-    List<CountryResponse?> GetAllCountries();
+    List<CountryResponse>? GetAllCountries();
 
     /// <summary>
     /// Gets a country by ID.

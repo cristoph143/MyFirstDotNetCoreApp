@@ -5,9 +5,10 @@
     Layout = "_Layout";
 }
 
-<h1>Person</h1>
-<form action="~/persons/index" method="get">
 
+<form action="~/persons/index" method="get">
+    <h1>Person</h1>
+    <a href="~/persons/create">Create Person</a>
     <div class="box flex">
         <div class="flex-1">
             <select class="form-input" name="searchBy">
@@ -100,7 +101,5 @@
             }
             <tr></tr>
         </tbody>
-        </tbody>
-
     </table>
 </form>

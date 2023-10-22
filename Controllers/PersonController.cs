@@ -4,7 +4,9 @@ using ServiceContracts.DTO;
 
 namespace MyFirstDotNetCoreApp.Controllers;
 
-public class PersonController(IPersonService personsService) : Controller
+public class PersonController(
+    IPersonService personsService,
+    ICountriesService countriesService) : Controller
 {
     [Route("/persons/index")]
     public IActionResult Index(
@@ -35,5 +37,35 @@ public class PersonController(IPersonService personsService) : Controller
         ViewBag.CurrentSortBy = sortBy;
         ViewBag.CurrentSortOrder = sortOrder.ToString();
         return View(sortedPersons); //Views/Persons/Index.cshtml
+    }
+
+    //Executes when the user clicks on "Create Person" hyperlink (while opening the create view)
+    [Route("persons/create")]
+    [HttpGet]
+    public IActionResult Create()
+    {
+        List<CountryResponse> countries = countriesService.GetAllCountries();
+        ViewBag.Countries = countries;
+
+        return View();
+    }
+
+    [HttpPost]
+    [Route("/persons/create")]
+    public IActionResult Create(PersonAddRequest personAddRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            List<CountryResponse>? countries = countriesService.GetAllCountries();
+            if (countries != null) ViewBag.Countries = countries;
+
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View();
+        }
+
+        //call the service method
+        personsService.AddPerson(personAddRequest);
+        //navigate to Index() action method (it makes another get request to "persons/index"
+        return RedirectToAction("Index", "Person");
     }
 }
