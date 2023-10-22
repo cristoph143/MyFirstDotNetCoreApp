@@ -38,8 +38,8 @@ public class PersonResponse
     public override string ToString()
     {
         return
-            $"Person ID: {PersonId}, " +
-            $"Person Name: {PersonName}, " +
+            $"PersonModel ID: {PersonId}, " +
+            $"PersonModel Name: {PersonName}, " +
             $"Email: {Email}, " +
             $"Date of Birth: {DateOfBirth?.ToString("dd MMM yyyy")}, " +
             $"Gender: {Gender}, Country ID: {CountryId}, " +
@@ -69,9 +69,9 @@ public class PersonResponse
 public static class PersonExtensions
 {
     /// <summary>
-    /// An extension method to convert an object of Person class into PersonResponse class
+    /// An extension method to convert an object of PersonModel class into PersonResponse class
     /// </summary>
-    /// <param name="person">The Person object to convert</param>
+    /// <param name="person">The PersonModel object to convert</param>
     /// /// <returns>Returns the converted PersonResponse object</returns>
     public static PersonResponse ToPersonResponse(this Person person) =>
         //person => convert => PersonResponse

@@ -56,7 +56,7 @@ public class PersonServiceTest
         PersonAddRequest personAddRequest =
             new PersonAddRequest
             {
-                PersonName = "Person name...",
+                PersonName = "PersonModel name...",
                 Email = "person@example.com",
                 Address = "sample address",
                 CountryID = Guid.NewGuid(),

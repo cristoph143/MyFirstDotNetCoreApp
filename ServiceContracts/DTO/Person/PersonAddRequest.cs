@@ -6,7 +6,7 @@ namespace ServiceContracts.DTO;
 
 public class PersonAddRequest
 {
-    [Required(ErrorMessage = "Person Name can't be blank")]
+    [Required(ErrorMessage = "PersonModel Name can't be blank")]
     public string? PersonName { get; set; }
 
     [Required(ErrorMessage = "Email can't be blank")]

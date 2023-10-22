@@ -30,14 +30,14 @@ public class PersonService : IPersonService
 
         // Validate PersonName
         ValidationHelper.ModelValidation(personAddRequest);
-        //convert personAddRequest into Person type
+        //convert personAddRequest into PersonModel type
         Person person = personAddRequest.ToPerson();
 
         //generate PersonID
         person.PersonId = Guid.NewGuid();
         //add person object to persons list
         _persons.Add(person);
-        //convert the Person object into PersonResponse type
+        //convert the PersonModel object into PersonResponse type
         return ConvertPersonToPersonResponse(person);
     }
 

@@ -6,10 +6,10 @@ namespace ServiceContracts.DTO;
 
 public class PersonUpdateRequest
 {
-    [Required(ErrorMessage = "Person ID can't be blank")]
+    [Required(ErrorMessage = "PersonModel ID can't be blank")]
     public Guid PersonId { get; set; }
 
-    [Required(ErrorMessage = "Person Name can't be blank")]
+    [Required(ErrorMessage = "PersonModel Name can't be blank")]
     public string? PersonName { get; set; }
 
     [Required(ErrorMessage = "Email can't be blank")]
@@ -23,9 +23,9 @@ public class PersonUpdateRequest
     public bool ReceiveNewsLetters { get; set; }
 
     /// <summary>
-    /// Converts the current object of PersonAddRequest into a new object of Person type
+    /// Converts the current object of PersonAddRequest into a new object of PersonModel type
     /// </summary>
-    /// <returns>Returns Person object</returns>
+    /// <returns>Returns PersonModel object</returns>
     public Person ToPerson()
     {
         return new Person()

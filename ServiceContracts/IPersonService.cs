@@ -6,7 +6,7 @@ public interface IPersonService
     /// <summary>
     /// Addds a new person into the list of persons
     /// </summary>
-    /// <param name="personAddRequest">Person to add</param>
+    /// <param name="personAddRequest">PersonModel to add</param>
     /// <returns>Returns the same person details, along with newly generated PersonID</returns>
     PersonResponse AddPerson(PersonAddRequest? personAddRequest);
 
@@ -21,7 +21,7 @@ public interface IPersonService
     /// <summary>
     /// Returns the person object based on the given person id
     /// </summary>
-    /// <param name="personID">Person id to search</param>
+    /// <param name="personID">PersonModel id to search</param>
     /// <returns>Returns matching person object</returns>
     PersonResponse? GetPersonByPersonId(Guid? personID);
 
@@ -46,7 +46,7 @@ public interface IPersonService
     /// <summary>
     /// Updates the specified person details based on the given person ID
     /// </summary>
-    /// <param name="personUpdateRequest">Person details to update, including person id</param>
+    /// <param name="personUpdateRequest">PersonModel details to update, including person id</param>
     /// <returns>Returns the person response object after updation</returns>
     PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest);
 

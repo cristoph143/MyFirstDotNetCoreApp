@@ -191,7 +191,7 @@ public class HomeController(
         var personGridModel = new PersonGridModel
         {
             GridTitle = "Friends",
-            Persons = new List<Person>
+            Persons = new List<PersonModel>
             {
                 new() { PersonName = "Mia", JobTitle = "Developer" },
                 new() { PersonName = "Emma", JobTitle = "UI Designer" },

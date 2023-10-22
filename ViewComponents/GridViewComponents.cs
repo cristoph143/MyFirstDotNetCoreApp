@@ -10,10 +10,10 @@ public class GridViewComponent : ViewComponent
     //     PersonGridModel model = new PersonGridModel()
     //     {
     //         GridTitle = "Persons List",
-    //         Persons = new List<Person>() {
-    //         new Person() { PersonName = "John", JobTitle = "Manager" },
-    //         new Person() { PersonName = "Jones", JobTitle = "Asst. Manager" },
-    //         new Person() { PersonName = "William", JobTitle = "Clerk" },
+    //         Persons = new List<PersonModel>() {
+    //         new PersonModel() { PersonName = "John", JobTitle = "Manager" },
+    //         new PersonModel() { PersonName = "Jones", JobTitle = "Asst. Manager" },
+    //         new PersonModel() { PersonName = "William", JobTitle = "Clerk" },
     //         }
     //     };
     //     // ViewData["Grid"] = model;
