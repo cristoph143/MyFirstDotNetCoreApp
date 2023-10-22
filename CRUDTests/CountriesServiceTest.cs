@@ -1,12 +1,19 @@
 ﻿using ServiceContracts;
 using ServiceContracts.DTO;
 using Services;
+using Xunit.Abstractions;
 
 namespace CRUDTests;
 
 public class CountriesServiceTest
 {
-    private readonly ICountriesService _countriesService = new CountriesService();
+    private readonly ICountriesService _countriesService = new CountriesService(false);
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public CountriesServiceTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
 
     #region AddCountry
     //When CountryAddRequest is null, it should throw ArgumentNullException
@@ -67,10 +74,10 @@ public class CountriesServiceTest
 
         //Act
         CountryResponse? response = _countriesService.AddCountry(request);
-        List<CountryResponse> countriesFromGetAllCountries = _countriesService.GetAllCountries();
+        List<CountryResponse?> countriesFromGetAllCountries = _countriesService.GetAllCountries();
 
         //Assert
-        Assert.True(response.CountryId != Guid.Empty);
+        Assert.True(response != null && response.CountryId != Guid.Empty);
         Assert.Contains(response, countriesFromGetAllCountries);
     }
 
@@ -83,22 +90,29 @@ public class CountriesServiceTest
     public void GetAllCountries_EmptyList()
     {
         //Act
-        List<CountryResponse> actualCountryResponseList = _countriesService.GetAllCountries();
+        List<CountryResponse?> actualCountryResponseList = _countriesService.GetAllCountries();
 
         //Assert
         Assert.Empty(actualCountryResponseList);
+        // Log debug information
+        _testOutputHelper.WriteLine("Actual Countries:");
+        foreach (CountryResponse? actualCountry in actualCountryResponseList)
+        {
+            _testOutputHelper.WriteLine($"- {actualCountry?.CountryName}");
+        }
     }
 
     [Fact]
     public void GetAllCountries_AddFewCountries()
     {
-        //Arrange
-        List<CountryAddRequest> countryRequestList = new List<CountryAddRequest>() { 
+        // Arrange
+        List<CountryAddRequest> countryRequestList = new List<CountryAddRequest>()
+        {
             new CountryAddRequest() { CountryName = "USA" },
             new CountryAddRequest() { CountryName = "UK" }
         };
 
-        //Act
+        // Act
         List<CountryResponse?> countriesListFromAddCountry = new List<CountryResponse?>();
 
         foreach (CountryAddRequest countryRequest in countryRequestList)
@@ -106,12 +120,25 @@ public class CountriesServiceTest
             countriesListFromAddCountry.Add(_countriesService.AddCountry(countryRequest));
         }
 
-        List<CountryResponse> actualCountryResponseList = _countriesService.GetAllCountries();
+        List<CountryResponse?> actualCountryResponseList = _countriesService.GetAllCountries();
 
-        //read each element from countries_list_from_add_country
+        // Assert
         foreach (CountryResponse? expectedCountry in countriesListFromAddCountry)
         {
             Assert.Contains(expectedCountry, actualCountryResponseList);
+        }
+
+        // Log debug information
+        _testOutputHelper.WriteLine("Expected Countries:");
+        foreach (CountryResponse? expectedCountry in countriesListFromAddCountry)
+        {
+            _testOutputHelper.WriteLine($"- {expectedCountry?.CountryName}");
+        }
+
+        _testOutputHelper.WriteLine("Actual Countries:");
+        foreach (CountryResponse? actualCountry in actualCountryResponseList)
+        {
+            _testOutputHelper.WriteLine($"- {actualCountry?.CountryName}");
         }
     }
     #endregion
@@ -146,7 +173,7 @@ public class CountriesServiceTest
 
         //Act
         CountryResponse? countryResponseFromGet = 
-            _countriesService.GetCountryByCountryId(countryResponseFromAdd.CountryId);
+            _countriesService.GetCountryByCountryId(countryResponseFromAdd?.CountryId);
 
         //Assert
         Assert.Equal(countryResponseFromAdd, countryResponseFromGet);
