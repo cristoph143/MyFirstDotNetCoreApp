@@ -7,7 +7,10 @@ namespace MyFirstDotNetCoreApp.Controllers;
 public class PersonController(IPersonService personsService) : Controller
 {
     [Route("/persons/index")]
-    public IActionResult Index(string searchBy, string? searchString)
+    public IActionResult Index(
+        string searchBy, string? searchString,
+        string sortBy = nameof(PersonResponse.PersonName),
+        SortOrderOptions sortOrder = SortOrderOptions.ASC)
     {
         ViewBag.SearchFields = new Dictionary<string, string>()
       {
@@ -27,6 +30,10 @@ public class PersonController(IPersonService personsService) : Controller
         List<PersonResponse> persons = personsService.GetFilteredPersons(searchBy, searchString);
         ViewBag.CurrentSearchBy = searchBy;
         ViewBag.CurrentSearchString = searchString;
-        return View(persons); //Views/Persons/Index.cshtml
+        //Sort
+        List<PersonResponse> sortedPersons = personsService.GetSortedPersons(persons, sortBy, sortOrder);
+        ViewBag.CurrentSortBy = sortBy;
+        ViewBag.CurrentSortOrder = sortOrder.ToString();
+        return View(sortedPersons); //Views/Persons/Index.cshtml
     }
 }

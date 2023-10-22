@@ -160,7 +160,7 @@ public class PersonService : IPersonService
 
     public List<PersonResponse> GetAllPersons() =>
         _persons.Select(
-            temp => temp.ToPersonResponse()
+            ConvertPersonToPersonResponse
         ).ToList();
 
     public PersonResponse? GetPersonByPersonId(Guid? personId)
