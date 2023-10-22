@@ -1,3 +1,10 @@
+
+Assignment instructions
+
+60 minutes to complete
+
+22 student solutions
+
 #### Requirement
 
 Create an Asp.Net Core Web Application that displays stock price with live updates from " **https://finnhub.io/** ".
@@ -6,7 +13,11 @@ Create an Asp.Net Core Web Application that displays stock price with live updat
 
 **Trade/Index:**
 
-![](https://img-c.udemycdn.com/redactor/raw/assignment/2023-02-13_14-01-41-c83b87e1d1b84572fd2ebfb598c84c75.png)
+![](https://img-c.udemycdn.com/redactor/raw/assignment/2022-11-04_18-07-08-278c1e0afe7e85e3da14425707c3f62d.png)
+
+**Trade/Orders:**
+
+![](https://img-c.udemycdn.com/redactor/raw/assignment/2022-11-04_18-07-09-3a05533e0bf566543adafd6970cde5ee.png)
 
 #### Architecture
 
@@ -29,9 +40,10 @@ https://finnhub.io is a service provider that provides live stock price informat
 
 You will store the following configuration in appsettings.json:
 
-<pre class="prettyprint linenums prettyprinted" role="presentation"><ol class="linenums"><li class="L0"><p><span class="pln"></span><span class="str">"TradingOptions"</span><span class="pun">:</span></p></li><li class="L1" data-node-id="20231019190423-red8qqh"><p><span class="pln"></span><span class="pun">{</span></p></li><li class="L2"><p><span class="pln"></span><span class="str">"DefaultStockSymbol"</span><span class="pun">:</span><span class="pln"></span><span class="str">"MSFT"</span></p></li><li class="L3" data-node-id="20231019190423-iquy03v"><p><span class="pln"></span><span class="pun">}</span></p></li></ol></pre>
+<pre class="prettyprint linenums prettyprinted" role="presentation"><ol class="linenums"><li class="L0"><p><span class="pln"></span><span class="str">"TradingOptions"</span><span class="pun">:</span></p></li><li class="L1" data-node-id="20231022120652-o6c06a1"><p><span class="pln"></span><span class="pun">{</span></p></li><li class="L2"><p><span class="pln"></span><span class="str">"DefaultStockSymbol"</span><span class="pun">:</span><span class="pln"></span><span class="str">"MSFT"</span><span class="pun">,</span></p></li><li class="L3" data-node-id="20231022120652-i7w8ou2"><p><span class="pln"></span><span class="str">"DefaultOrderQuantity"</span><span class="pun">:</span><span class="pln"></span><span class="lit">100</span></p></li><li class="L4"><p><span class="pln"></span><span class="pun">}</span></p></li></ol></pre>
 
 * The "DefaultStockSymbol" acts as a default stock to fetch details and display stock price.
+* The "DefaultOrderQuantity" specifies default quantity to place an order in "Trade/Index" view.
 
 #### Entity model:
 
@@ -249,7 +261,7 @@ Implement the above service interface called 'IStocksService' that performs the 
 
 #### StockTrade:
 
-You need to create a view model class called " **StockTrade** ".
+You need to create two view model classes called " **StockTrade** " and " **Orders** ".
 
 Create a view model class called "StockTrade" in the Asp.Net Core project with following properties:
 
@@ -263,9 +275,18 @@ unit Quantity
 
 This class will be used to send model object from controller to the "Trade/Index" view.
 
+#### Orders:
+
+Create a view model class called "Orders" in the Asp.Net Core project with following properties:
+
+* List`<BuyOrderResponse>` BuyOrders
+* List`<SellOrderResponse>` SellOrders
+
+This class will be used to send list of buy orders and sell orders - from controller to the "Trade/Orders" view.
+
 #### "Trade\Index.cshtml":
 
-You need to create a view called "Trade\Index.cshtml".
+You need to create two views called "Trade\Index.cshtml" and "Trade\Orders.cshtml".
 
 Create
  a view called "Index.cshtml" in "Views\Trade" folder - that is strongly
@@ -273,7 +294,7 @@ Create
 model object of "StockTrade" type and displays the stock name and its
 price as shown in below screenshot.
 
-![](https://img-c.udemycdn.com/redactor/raw/assignment/2023-02-13_14-13-53-49746bb9a507109b6219c070e58f198c.png)
+![](https://img-c.udemycdn.com/redactor/raw/assignment/2022-11-04_18-07-10-cb74ebd4780304ac9eadb634e72fc74a.png)
 
 The
  view should store the stock symbol (Eg: MSFT) as a hidden element. So
@@ -314,9 +335,31 @@ Overall,
 every one or two seconds as long as the page runs (of course, only when
 the market is LIVE i.e. usually 09:30 a.m. to 4 p.m. (ET)).
 
+When
+ the user clicks on the "Buy" button, the browser should make a HTTP
+POST request to "Trade/BuyOrder" with values of "StockSymbol",
+"StockName", "Quantity" and "Price". You can submit values that are not
+to be directly displayed, through input type="hidden" fields also.
+
+When
+ the user clicks on the "Sell" button, the browser should make a HTTP
+POST request to "Trade/SellOrder" with values of "StockSymbol",
+"StockName", "Quantity" and "Price". You can submit values that are not
+to be directly displayed, through input type="hidden" fields also.
+
+#### "Trade\Orders.cshtml":
+
+Create
+ a view called "Orders.cshtml" in "Views\Trade" folder - that is
+strongly typed to the view model class called "Orders". So it receives
+the model object of "Orders" type from controller and displays the list
+of both buy orders and sell orders as shown in the below screenshot.
+
+![](https://img-c.udemycdn.com/redactor/raw/assignment/2022-11-04_18-07-10-b780d7938fd8c3f94eaa6a14fb01603f.png)
+
 #### Trade Controller:
 
-Create a controller called TradeController that has five action methods called " **Index** ()".
+Create a controller called TradeController that has five action methods called " **Index** ()", " **BuyOrder** ()" and " **SellOrder** ()" and " **Orders** ()".
 
 The controller has to inject the appsettings called "TradingOptions" (from appsettings.json), IFinnhubService, IStocksService.
 
@@ -336,6 +379,38 @@ are read from the return values of above mentioned service methods i.e.
 "FinnhubService.GetStockPriceQuote()".
 
 - Then it sends the same model object to the view.
+
+#### TradeController.BuyOrder():
+
+* It receives HTTP POST request at route "Trade/BuyOrder".
+* It receives the model object of "BuyOrder" type through model binding.
+* It initializes "DateAndTimeOfOrder" into the model object (i.e. buyOrder).
+* If
+  model state has no errors, it invokes StocksService.CreateBuyOrder()
+  method. Then it redirects to "Trade/Orders" route to display list of
+  orders.
+* Alternatively, in case of validation errors in the model object, it reinvokes the same view, along with same model object.
+
+#### TradeController.SellOrder():
+
+* It receives HTTP POST request at route "Trade/SellOrder".
+* It receives the model object of "SellOrder" type through model binding.
+* It initializes "DateAndTimeOfOrder" into the model object (i.e. sellOrder).
+* If
+  model state has no errors, it invokes StocksService.CreateSellOrder()
+  method. Then it redirects to "Trade/Orders" route to display list of
+  orders.
+* Alternatively, in case of validation errors in the model object, it reinvokes the same view, along with same model object.
+
+#### TradeController.Orders():
+
+* It receives HTTP GET request at route "Trade/Orders".
+* It invokes both the service methods StocksService.GetBuyOrders() and StocksService.GetSellOrders().
+* Then
+  it creates an object of the view model class called 'Orders' and
+  initializes both 'BuyOrders' and 'SellOrders' properties with the data
+  returned by the above called service methods.
+* It invokes the "Trade/Orders" view to display list of orders.
 
 #### xUnit Test cases:
 
@@ -414,7 +489,8 @@ all the same sell orders.
 
 #### Changes from previous assignment:
 
-* "BuyOrder" and "SellOrder" unit test cases.
+* Create "Trade/Orders" view.
+* "BuyOrder" and "SellOrder" functionality in "Trade/Index" view.
 
 #### Questions for this assignment
 
