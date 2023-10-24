@@ -17,6 +17,7 @@ internal abstract class Program
         builder.Services.Configure<WeatherApiOptions>(builder.Configuration.GetSection("weatherApi"));
         builder.Configuration.AddJsonFile("MyOwnConfig.json", true, true);
         builder.Services.AddScoped<ICitiesService, CitiesService>();
+        builder.Services.AddScoped<IStocksService, StocksService>(); // Fixed the error here
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {
             containerBuilder.RegisterType<CitiesService>().As<ICitiesService>().InstancePerLifetimeScope(); //AddScoped

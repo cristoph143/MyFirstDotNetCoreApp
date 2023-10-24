@@ -8,7 +8,8 @@
 </div>
 
 <form method="post">
-    @await Html.PartialAsync("_TradingPanel", Model)
+    @Html.Partial("_TradingPanel", Model)
+
     <input type="hidden" name="StockSymbol" id="StockSymbol" value="@Model.StockSymbol" />
     <input type="hidden" name="StockName" id="StockName" value="@Model.StockName" />
     <input type="hidden" name="Price" id="price" value="@Model.Price" />

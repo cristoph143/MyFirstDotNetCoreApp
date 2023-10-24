@@ -34,8 +34,7 @@ public class StocksController(
     public async Task<IActionResult> Trade()
     {
         //reset stock symbol if not exists
-        if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
-            _tradingOptions.DefaultStockSymbol = "MSFT";
+        tradingOptions.Value.DefaultStockSymbol ??= "MSFT";
         var companyProfileDictionary =
             finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
         var stockQuoteDictionary =

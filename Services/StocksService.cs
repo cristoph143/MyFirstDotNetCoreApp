@@ -20,10 +20,11 @@ public class StocksService : IStocksService
         return buyOrder.ToBuyOrderResponse();
     }
 
-    public SellOrderResponse CreateSellOrder(SellOrderRequest? sellOrderRequest)
+    public SellOrderResponse CreateSellOrder(SellOrderRequest sellOrderRequest)
     {
         if (sellOrderRequest == null)
             throw new ArgumentNullException(nameof(sellOrderRequest));
+
         ValidationHelper.ModelValidation(sellOrderRequest);
         SellOrder sellOrder = sellOrderRequest.ToSellOrder();
         sellOrder.SellOrderID = Guid.NewGuid();

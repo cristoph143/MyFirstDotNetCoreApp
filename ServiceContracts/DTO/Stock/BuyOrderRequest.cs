@@ -22,13 +22,10 @@ public class BuyOrderRequest : IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         List<ValidationResult> results = new List<ValidationResult>();
-
+        Console.WriteLine(DateAndTimeOfOrder);
         //Date of order should be less than Jan 01, 2000
-        if (DateAndTimeOfOrder < Convert.ToDateTime("2000-01-01"))
-        {
-            results.Add(new ValidationResult("Date of the order should not be older than Jan 01, 2000."));
-        }
-
+        if (DateAndTimeOfOrder >= Convert.ToDateTime("2000-01-01")) return results;
+        results.Add(new ValidationResult("Date of the order should not be older than Jan 01, 2000."));
         return results;
     }
 }

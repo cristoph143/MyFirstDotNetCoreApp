@@ -1,7 +1,7 @@
 ﻿//Create a WebSocket to perform duplex (back-and-forth) communication with server
 const token = document.querySelector("#FinnhubToken").value;
 const socket = new WebSocket(`wss://ws.finnhub.io?token=${token}`);
-const stockSymbol = document.getElementById("StockSymbol").value; //get symbol from input hidden
+var stockSymbol = document.getElementById("StockSymbol").value; //get symbol from input hidden
 
 // Connection opened. Subscribe to a symbol
 socket.addEventListener('open', function (event) {
@@ -31,15 +31,17 @@ socket.addEventListener('message', function (event) {
     c: trade conditions (if any)
     */
 
-    const eventData = JSON.parse(event.data);
+    var eventData = JSON.parse(event.data);
     if (!eventData) {
         return;
     }
     if (!eventData.data) {
         return;
     }
-    const updatedPrice = JSON.parse(event.data).data[0].p;
+    var updatedPrice = JSON.parse(event.data).data[0].p;
+    var timeStamp = JSON.parse(event.data).data[0].t;
     $(".price").text(updatedPrice.toFixed(2));
+    $("#price").val(updatedPrice.toFixed(2));
 });
 
 // Unsubscribe
