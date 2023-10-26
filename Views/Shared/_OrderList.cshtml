@@ -1,0 +1,22 @@
+﻿@if (Model.Count == 0)
+{
+    <div class="mt text-blue">No orders</div>
+}
+else
+{              
+<pre>@Json.Serialize(Model)</pre>
+@foreach (var order in Model)
+    {
+        var price = order.Price.ToString("N");
+        var tradeAmount = order.TradeAmount.ToString("N");
+        var dateAndTimeOfOrder = order.DateAndTimeOfOrder.ToString("dd MMMM yyyy hh:mm:ss tt");
+
+        <div class="border-bottom p">
+            <h3>@order.StockName (@order.StockSymbol)</h3>
+            <h5 class="mb">@order.Quantity <span class="text-grey">shares at </span> $@price</h5>
+            <h5 class="mb"><span class="text-grey">Trade Amount: </span> $@tradeAmount</h5>
+
+            <div class="text-grey">@dateAndTimeOfOrder</div>
+        </div>
+    }
+}

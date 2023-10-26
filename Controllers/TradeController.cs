@@ -54,19 +54,20 @@ public class TradeController(IOptions<TradingOptions> tradingOptions,
         ModelState.Clear();
         TryValidateModel(buyOrderRequest);
 
-        if (ModelState.IsValid)
+        StockTrade stockTrade = new()
         {
-            BuyOrderResponse buyOrderResponse = stocksService.CreateBuyOrder(buyOrderRequest);
-            return RedirectToAction(nameof(Order));
-        }
-
-        ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-        StockTrade stockTrade = new StockTrade()
-        {
+            Price = buyOrderRequest.Price,
             StockName = buyOrderRequest.StockName,
             Quantity = buyOrderRequest.Quantity,
             StockSymbol = buyOrderRequest.StockSymbol
         };
+        if (ModelState.IsValid)
+        {
+            var buyOrderResponse = stocksService.CreateBuyOrder(buyOrderRequest);
+            return RedirectToAction(nameof(Order), new { buyOrderResponse });
+        }
+
+        ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
         return View("Index", stockTrade);
     }
 
@@ -79,26 +80,26 @@ public class TradeController(IOptions<TradingOptions> tradingOptions,
         ModelState.Clear();
         TryValidateModel(sellOrderRequest);
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            SellOrderResponse sellOrderResponse = stocksService.CreateSellOrder(sellOrderRequest);
-            return RedirectToAction(nameof(Order));
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            StockTrade stockTrade = new StockTrade()
+            {
+                StockName = sellOrderRequest.StockName,
+                Quantity = sellOrderRequest.Quantity,
+                StockSymbol = sellOrderRequest.StockSymbol
+            };
+            return View("Index", stockTrade);
         }
 
-        ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-        StockTrade stockTrade = new StockTrade()
-        {
-            StockName = sellOrderRequest.StockName,
-            Quantity = sellOrderRequest.Quantity,
-            StockSymbol = sellOrderRequest.StockSymbol
-        };
-        return View("Index", stockTrade);
+        SellOrderResponse sellOrderResponse = stocksService.CreateSellOrder(sellOrderRequest);
+        return RedirectToAction(nameof(Order));
     }
 
     [Route("[action]")]
     public IActionResult Order()
     {
-        var buyOrderResponses = stocksService.GetBuyOrders();
+        List<BuyOrderResponse> buyOrderResponses = stocksService.GetBuyOrders();
         List<SellOrderResponse> sellOrderResponses = stocksService.GetSellOrders();
 
         Orders orders = new Orders()
